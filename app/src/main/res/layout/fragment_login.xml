@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_container_Login"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    tools:context=".ui.common.login.Login"
+    android:tag="Login">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -13,12 +14,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/login_section"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profilePic">
 
             <ImageView
                 android:id="@+id/profilePic"
-                android:layout_width="wrap_content"
-                android:layout_height="230dp"
+                android:layout_width="343dp"
+                android:layout_height="183dp"
                 android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -35,16 +41,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_Register"
-                android:layout_width="273dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="75dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:text="@string/register_with_email"
+                app:iconGravity="textEnd"
+                app:iconTint="@null"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.75"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
-
             <Button
                 android:id="@+id/bt_Login"
                 android:layout_width="124dp"
@@ -85,7 +93,7 @@
                 android:id="@+id/tilEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/profilePic">
