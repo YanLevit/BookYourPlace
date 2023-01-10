@@ -5,7 +5,7 @@
     android:id="@+id/fragment_container_Login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.common.login.Login"
+
     android:tag="Login">
     <ScrollView
         android:layout_width="match_parent"
@@ -20,6 +20,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profilePic">
+
+            <Button
+                android:id="@+id/bt_Register"
+                android:layout_width="229dp"
+                android:layout_height="54dp"
+                android:layout_marginTop="25dp"
+                android:text="@string/register_with_email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
 
             <ImageView
                 android:id="@+id/profilePic"
@@ -41,18 +51,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_Register"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="@string/register_with_email"
-                app:iconGravity="textEnd"
-                app:iconTint="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.75"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
             <Button
                 android:id="@+id/bt_Login"
                 android:layout_width="124dp"
