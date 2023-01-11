@@ -41,4 +41,10 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="old_password">Old Password</string>
+
+
+    <string name="weak">Weak</string>
+    <string name="medium">Medium</string>
+    <string name="strong">Strong</string>
+    <string name="very_strong">Very Strong</string>
 </resources>

@@ -21,15 +21,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profilePic">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_Register"
-                android:layout_width="229dp"
-                android:layout_height="54dp"
-                android:layout_marginTop="25dp"
+                android:layout_width="289dp"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/register_with_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
+                app:layout_constraintTop_toBottomOf="@+id/bt_Login"/>
 
             <ImageView
                 android:id="@+id/profilePic"
@@ -51,7 +51,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_Login"
                 android:layout_width="124dp"
                 android:layout_height="53dp"

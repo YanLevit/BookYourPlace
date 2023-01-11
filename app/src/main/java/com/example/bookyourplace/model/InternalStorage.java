@@ -1,4 +1,4 @@
-package com.example.bookyourplace.data;
+package com.example.bookyourplace.model;
 
 import android.content.Context;
 
