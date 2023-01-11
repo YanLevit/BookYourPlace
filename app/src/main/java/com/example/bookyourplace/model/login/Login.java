@@ -1,7 +1,6 @@
-package com.example.bookyourplace.model;
+package com.example.bookyourplace.model.login;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,16 +21,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
-
+import com.example.bookyourplace.model.HotelManager;
 import com.example.bookyourplace.model.InternalStorage;
+import com.example.bookyourplace.model.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.firebase.auth.AuthCredential;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +43,7 @@ public class Login extends Fragment {
     TextView tv_Forgot_Password;
     Button btLogin, btRegisters;
     CheckBox cb_Remeber;
-//    FirebaseUser mUser;
+    //    FirebaseUser mUser;
     FirebaseAuth mAuth;
     //String emailPattern = "[a-zA-Z0-9._]+@[a-z]+\\.+[a-z]+";
     //ProgressDialog progressDialog;
@@ -68,7 +63,7 @@ public class Login extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_login, container, false);
 
-       checkPermissions();
+        checkPermissions();
 
         initializeElements(root);
 
@@ -105,9 +100,9 @@ public class Login extends Fragment {
             Navigation.findNavController(root).navigate(R.id.action_login_to_registration,bundle);
         });
 
-        /*tv_Forgot_Password.setOnClickListener(v -> {
+        tv_Forgot_Password.setOnClickListener(v -> {
             Navigation.findNavController(root).navigate(R.id.action_login_to_forgotPassword);
-        });*/
+        });
     }
 
 
@@ -231,10 +226,7 @@ public class Login extends Fragment {
                 inputPassword.setText(password);
 
                 cb_Remeber.setChecked(true);
-
-                /*if(autoLogin){
-                    btLogin.performClick();
-                }*/
+                
             }
 
         } catch (IOException e) {
@@ -301,3 +293,4 @@ public class Login extends Fragment {
 //        }
 //    }
 }
+

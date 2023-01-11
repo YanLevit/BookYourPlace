@@ -6,12 +6,15 @@
     app:startDestination="@id/login">
     <fragment
         android:id="@+id/login"
-        android:name="com.example.bookyourplace.model.Login"
+        android:name="com.example.bookyourplace.model.login.Login"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_registration"
             app:destination="@id/registration" />
+        <action
+            android:id="@+id/action_login_to_forgotPassword"
+            app:destination="@id/forgotPassword" />
     </fragment>
     <fragment
         android:id="@+id/registration"
@@ -19,6 +22,14 @@
         android:label="fragment_registration">
         <action
             android:id="@+id/action_registration_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPassword"
+        android:name="com.example.bookyourplace.model.login.ForgotPassword"
+        android:label="ForgotPassword" >
+        <action
+            android:id="@+id/action_forgotPassword_to_login"
             app:destination="@id/login" />
     </fragment>
 </navigation>

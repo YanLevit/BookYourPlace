@@ -35,8 +35,12 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.example.bookyourplace.model.Login"
+            android:name="com.example.bookyourplace.model.login.Login"
             android:label="fragment_login"
+            tools:ignore="Instantiatable" />
+        <activity
+            android:name="com.example.bookyourplace.model.login.ForgotPassword"
+            android:label="fragment_forgot_password"
             tools:ignore="Instantiatable" />
         <activity
             android:name="com.example.bookyourplace.model.Registration"
