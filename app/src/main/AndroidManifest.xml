@@ -50,10 +50,7 @@
             android:name="com.example.bookyourplace.model.traveler.Traveler"
             android:label="traveler_fragment_registration"
             tools:ignore="Instantiatable" />
-        <!--<activity android:name="com.example.bookyourplace.model.Login"
-            android:label="fragment_login"/>
-      &lt;!&ndash;  <activity android:name=".Registration"
-            android:parentActivityName=".MainActivity"/>&ndash;&gt;-->
+
     </application>
 
 </manifest>

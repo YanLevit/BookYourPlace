@@ -1,4 +1,6 @@
-package com.example.bookyourplace.model;
+package com.example.bookyourplace.model.hotel_manager;
+
+import com.example.bookyourplace.model.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,3 +26,4 @@ public class HotelManager extends User implements Serializable {
     //////////////// GETS BEGIN ////////////////
 
 }
+

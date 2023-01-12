@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
-import com.example.bookyourplace.model.HotelManager;
+import com.example.bookyourplace.model.hotel_manager.HotelManager;
 import com.example.bookyourplace.model.InternalStorage;
 import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -194,6 +194,7 @@ public class Login extends Fragment {
     private void verifyTypeUser(String userId){
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
 
         database.child("Traveler").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

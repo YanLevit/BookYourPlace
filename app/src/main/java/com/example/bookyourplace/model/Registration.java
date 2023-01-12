@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
+import com.example.bookyourplace.model.hotel_manager.HotelManager;
 import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputLayout;
