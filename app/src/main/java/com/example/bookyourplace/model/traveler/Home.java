@@ -75,7 +75,7 @@ public class Home extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 Dialog dialog = new Dialog(getContext());
-                //dialog.setContentView(R.layout.dialog_logout);
+                dialog.setContentView(R.layout.logout);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 //dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -84,12 +84,12 @@ public class Home extends Fragment {
 
                 dialog.create();
 
-//                Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
-//                Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
+                Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
+                Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
 
-//                confirm.setOnClickListener(v -> {bt_Logout.performClick(); dialog.dismiss();});
-//
-//                deny.setOnClickListener(v -> dialog.dismiss());
+                confirm.setOnClickListener(v -> {bt_Logout.performClick(); dialog.dismiss();});
+
+                deny.setOnClickListener(v -> dialog.dismiss());
 
                 dialog.show();
             }

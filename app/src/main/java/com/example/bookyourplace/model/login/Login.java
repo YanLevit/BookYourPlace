@@ -108,7 +108,7 @@ public class Login extends Fragment {
     }
 
 
-    /*private void firebaseAuthWithGoogle(String idToken) {
+    private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(getActivity(), task -> {
             if (task.isSuccessful()) {
@@ -125,7 +125,7 @@ public class Login extends Fragment {
                 Log.w("TAG", "signInWithCredential:failure", task.getException());
             }
         });
-    }*/
+    }
 
 
     private void verifyData(){
