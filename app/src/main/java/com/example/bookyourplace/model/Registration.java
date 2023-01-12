@@ -2,7 +2,6 @@ package com.example.bookyourplace.model;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,23 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
-import com.example.bookyourplace.model.HotelManager;
-import com.example.bookyourplace.model.Traveler;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Registration extends Fragment {
 
@@ -122,20 +114,21 @@ public class Registration extends Fragment {
 
         btRegister.setOnClickListener(v -> verifyData());
 
-//        inputPassword.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                calculatePasswordStrength(s.toString());
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            }
-//        });
+        inputPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                calculatePasswordStrength(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         cw_chooseHotelmanager.setOnClickListener(v -> {
             cw_chooseHotelmanager.setChecked(true);
             cw_chooseHotelmanager.setCardBackgroundColor(Color.parseColor("#FF3F51B5"));
@@ -174,11 +167,11 @@ public class Registration extends Fragment {
             error = true;
         }
 
-       /* if(inputPhone.){
+        if(phone.isEmpty()){
             inputPhone.setError("Phone is required or is not valid");
             inputPhone.requestFocus();
             error = true;
-        }*/
+        }
 
         if(!googleRegistration){
             if(email.isEmpty()){
@@ -241,12 +234,12 @@ public class Registration extends Fragment {
                         }
                     });
         }
-       /* else {
+        else {//// check
             mUser = mAuth.getCurrentUser();
             registerInFirebase(name,surname,phone,email,password,mUser.getUid());
-        }*/
-//        mUser = mAuth.getCurrentUser();
-//        registerInFirebase(name,surname,phone,email,password,mUser.getUid());
+        }
+        mUser = mAuth.getCurrentUser();
+        registerInFirebase(name,surname,phone,email,password,mUser.getUid());
     }
 
     private void registerInFirebase(String name, String surname, String phone, String email, String password, String userID) {
@@ -254,12 +247,14 @@ public class Registration extends Fragment {
         String path = "";
 
         if(cw_chooseTraveler.isChecked()){
-            newuser = googleRegistration ?  new Traveler(name, surname, phone, email,true) : new Traveler(name, surname, email, phone, password);
+          //  newuser = googleRegistration ?  new Traveler(name, surname, phone, email,true) : new Traveler(name, surname, email, phone, password);
+            newuser = new Traveler(name, surname, email, phone, password);
             path = "Traveler";
         }
 
         if(cw_chooseHotelmanager.isChecked()){
-            newuser = googleRegistration ?   new HotelManager(name, surname, phone, email,true) :  new HotelManager(name, surname, email, phone, password);
+            //newuser = googleRegistration ?   new HotelManager(name, surname, phone, email,true) :  new HotelManager(name, surname, email, phone, password);
+            newuser = new HotelManager(name, surname, email, phone, password);
             path = "Hotel Manager";
         }
 
@@ -270,7 +265,7 @@ public class Registration extends Fragment {
                         Toast.makeText(getContext(),"User has ben registered successfully!", Toast.LENGTH_LONG).show();
                         progressBar_Register.setVisibility(View.GONE);
 
-                        FirebaseAuth.getInstance().signOut();
+                        //FirebaseAuth.getInstance().signOut();
                         Navigation.findNavController(getView()).navigate(R.id.action_registration_to_login);
                     }
                     else {
@@ -280,14 +275,14 @@ public class Registration extends Fragment {
                 });
     }
 
-//    private void calculatePasswordStrength(String str) {
-//        PasswordStrength passwordStrength = PasswordStrength.calculate(str);
-//
-//        progressBar_passwordstrength_registration.setProgressTintList(ColorStateList.valueOf(passwordStrength.getColor()));
-//        progressBar_passwordstrength_registration.setProgress(passwordStrength.getStrength());
-//        tv_passwordstrength_registration.setText(passwordStrength.getMsg());
-//
-//    }
+    private void calculatePasswordStrength(String str) {
+
+        PasswordStrength passwordStrength = PasswordStrength.calculate(str);
+        progressBar_passwordstrength_registration.setProgressTintList(ColorStateList.valueOf(passwordStrength.getColor()));
+        progressBar_passwordstrength_registration.setProgress(passwordStrength.getStrength());
+        tv_passwordstrength_registration.setText(passwordStrength.getMsg());
+
+    }
 //    @Override
 //
 //    protected void onCreate(Bundle savedInstanceState) {

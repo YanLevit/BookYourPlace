@@ -23,10 +23,12 @@ import androidx.navigation.Navigation;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.HotelManager;
 import com.example.bookyourplace.model.InternalStorage;
-import com.example.bookyourplace.model.Traveler;
+import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,7 +50,7 @@ public class Login extends Fragment {
     //String emailPattern = "[a-zA-Z0-9._]+@[a-z]+\\.+[a-z]+";
     //ProgressDialog progressDialog;
     Traveler traveler;
-    HotelManager manager;
+    //HotelManager manager;
     final boolean autoLogin = true;
 
     String[] permissions = new String[]{
@@ -106,6 +108,25 @@ public class Login extends Fragment {
     }
 
 
+    /*private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(getActivity(), task -> {
+            if (task.isSuccessful()) {
+                boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                if (isNewUser) {
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("IsGoogle", true);
+                    Navigation.findNavController(getView()).navigate(R.id.action_login_to_registration, bundle);
+                } else {
+                    verifyTypeUser(mAuth.getCurrentUser().getUid());
+                }
+            } else {
+                // If sign in fails, display a message to the user.
+                Log.w("TAG", "signInWithCredential:failure", task.getException());
+            }
+        });
+    }*/
+
 
     private void verifyData(){
         String email = inputEmail.getText().toString().trim();
@@ -133,6 +154,7 @@ public class Login extends Fragment {
         if(error){
             return;
         }
+
 
         login(email,password);
     }
@@ -179,7 +201,7 @@ public class Login extends Fragment {
                 traveler = snapshot.getValue(Traveler.class);
                 if(traveler != null){
                     Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
-                    //Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
+                     Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
                 }
             }
 
@@ -189,21 +211,21 @@ public class Login extends Fragment {
             }
         });
 
-        database.child("Hotel Manager").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                manager = snapshot.getValue(HotelManager.class);
-                if(manager != null){
-                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
-                    //Navigation.findNavController(getView()).navigate(R.id.action_login_to_hotel_manager_home);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ERROR", "getManager:onCancelled",error.toException());
-            }
-        });
+//        database.child("Hotel Manager").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                manager = snapshot.getValue(HotelManager.class);
+//                if(manager != null){
+//                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+//                    //Navigation.findNavController(getView()).navigate(R.id.action_login_to_hotel_manager_home);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e("ERROR", "getManager:onCancelled",error.toException());
+//            }
+//        });
     }
 
 
@@ -226,7 +248,7 @@ public class Login extends Fragment {
                 inputPassword.setText(password);
 
                 cb_Remeber.setChecked(true);
-                
+
             }
 
         } catch (IOException e) {
