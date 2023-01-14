@@ -25,6 +25,8 @@ import com.example.bookyourplace.model.hotel_manager.HotelManager;
 import com.example.bookyourplace.model.InternalStorage;
 import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +36,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +57,7 @@ public class Login extends Fragment {
     Traveler traveler;
     //HotelManager manager;
     final boolean autoLogin = true;
-
+    FirebaseFirestore db;
     String[] permissions = new String[]{
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -192,26 +197,24 @@ public class Login extends Fragment {
     }
 
     private void verifyTypeUser(String userId){
-
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-
-        database.child("Traveler").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference docRef = firestore.collection("Traveler").document(userId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                traveler = snapshot.getValue(Traveler.class);
-                if(traveler != null){
-                    Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
-                     Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot.exists()) {
+                        Traveler traveler = snapshot.toObject(Traveler.class);
+                        Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
+                    }
+                } else {
+                    Log.d("ERROR", "get failed with ", task.getException());
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ERROR", "getTraveler:onCancelled",error.toException());
-            }
         });
-
+    }
 //        database.child("Hotel Manager").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -227,7 +230,7 @@ public class Login extends Fragment {
 //                Log.e("ERROR", "getManager:onCancelled",error.toException());
 //            }
 //        });
-    }
+   // }
 
 
     private void saveRemeberData(String email, String password){

@@ -60,6 +60,8 @@ public class ForgotPassword extends Fragment {
         });
     }
 
+
+
     private void resetPassword(View root) {
         String email = et_EmailAddress.getText().toString().trim();
         boolean error = false;

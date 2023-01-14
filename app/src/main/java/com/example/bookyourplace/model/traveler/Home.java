@@ -29,6 +29,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 //import com.google.android.gms.tasks.OnCompleteListener;
 //import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,6 +42,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 //import com.google.type.LatLng;
 
 import java.io.IOException;
@@ -210,35 +215,27 @@ public class Home extends Fragment {
     private void readUserData() {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
-
-//        if(mUser != null){
-//            googleSignInClient = GoogleSignIn.getClient(getActivity(), GoogleSignInOptions.DEFAULT_SIGN_IN);
-//        }
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Traveler").child(mUser.getUid());
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference docRef = firestore.collection("Traveler").document(mUser.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                user = snapshot.getValue(Traveler.class);
-                if(user != null){
-                    loadDatatoElements();
-
-                    try {
-                        InternalStorage.writeObject(getContext(), "User", user);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot.exists()) {
+                        user = snapshot.toObject(Traveler.class);
+                        loadDatatoElements();
+                        try {
+                            InternalStorage.writeObject(getContext(), "User", user);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
+                } else {
+                    Log.d("ERROR", "get failed with ", task.getException());
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("ERROR", "getUser:onCancelled",error.toException());
-            }
         });
-
-
     }
     private void loadDatatoElements(){
         if(user != null){
