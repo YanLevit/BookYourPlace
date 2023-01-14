@@ -33,7 +33,6 @@ public class User implements Serializable {
         password = "";
         //////////////////////////////
         this.language = "en";
-        isGoogle = false;
     }
 
     public User(String name, String surname, String email, String phone, String password) {
@@ -49,7 +48,6 @@ public class User implements Serializable {
         this.password = password;
         //////////////////////////////
         this.language = "en";
-        isGoogle = false;
     }
 
     public User(String name, String surname, String email, String birthday, String phone, String password, String language, String units_currency, String units_distance) {
@@ -66,9 +64,9 @@ public class User implements Serializable {
         this.password = password;
         //////////////////////////////
         this.language = language;
-        isGoogle = false;
     }
 
+/*
     public User(String name, String surname, String phone, String email, boolean isGoogle) {
         image = "";
         //////////////////////////////
@@ -85,6 +83,7 @@ public class User implements Serializable {
         this.language = "en";
         this.isGoogle = isGoogle;
     }
+*/
 
 
     //////////////// GETS BEGIN ////////////////
