@@ -166,7 +166,7 @@ public class Home extends Fragment {
         bt_EditProfile.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putSerializable("User", user);
-           // Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_profile, bundle);
+          Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_profile, bundle);
         });
 
 
