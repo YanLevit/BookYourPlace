@@ -1,5 +1,7 @@
 package com.example.bookyourplace.model;
 
+import com.example.bookyourplace.model.Address;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -9,7 +11,7 @@ public class User implements Serializable {
     private String surname;
     private String birthday;
     private String phone;
-    //private Address address;
+    private Address address;
     ////////////////     SECURITY     ////////////////
     private String email;
     private String password;
@@ -27,7 +29,7 @@ public class User implements Serializable {
         birthday = "";
         //////////////////////////////
         phone = "";
-        //address = new Address();
+        address = new Address();
         //////////////////////////////
         email = "";
         password = "";
@@ -41,7 +43,7 @@ public class User implements Serializable {
         this.name = name;
         this.surname = surname;
         birthday = "";
-        //address = new Address();
+        address = new Address();
         //////////////////////////////
         this.phone = phone;
         this.email = email;
@@ -58,33 +60,13 @@ public class User implements Serializable {
         this.birthday = birthday;
         //////////////////////////////
         this.phone = phone;
-        //address = new Address();
+        address = new Address();
         //////////////////////////////
         this.email = email;
         this.password = password;
         //////////////////////////////
         this.language = language;
     }
-
-/*
-    public User(String name, String surname, String phone, String email, boolean isGoogle) {
-        image = "";
-        //////////////////////////////
-        this.name = name;
-        this.surname = surname;
-        birthday = "";
-        //////////////////////////////
-        this.phone = phone;
-        //address = new Address();
-        //////////////////////////////
-        this.email = email;
-        password = "";
-        //////////////////////////////
-        this.language = "en";
-        this.isGoogle = isGoogle;
-    }
-*/
-
 
     //////////////// GETS BEGIN ////////////////
     public String getImage() {
@@ -107,7 +89,7 @@ public class User implements Serializable {
         return phone;
     }
 
-    //public Address getAddress(){ return address;}
+    public Address getAddress(){ return address;}
 
     public String getEmail() {
         return email;
@@ -147,7 +129,7 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    //public void setAddress(Address address){ this.address = address;}
+    public void setAddress(Address address){ this.address = address;}
 
     public void setEmail(String email) {
         this.email = email;

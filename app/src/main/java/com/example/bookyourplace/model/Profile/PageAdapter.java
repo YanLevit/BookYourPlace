@@ -1,4 +1,4 @@
-package com.example.bookyourplace.model;
+package com.example.bookyourplace.model.Profile;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

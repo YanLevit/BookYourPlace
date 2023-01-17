@@ -171,20 +171,6 @@ public class Home extends Fragment {
 
 
         bt_Logout.setOnClickListener(v -> {
-
-//            if(user.isGoogle()  == true){
-//                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if(task.isSuccessful()){
-//                            mAuth.signOut();
-//                        }
-//                    }
-//                });
-//            }
-//            else{
-//                mAuth.signOut();
-//            }
             mAuth.signOut();
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_login);
         });
