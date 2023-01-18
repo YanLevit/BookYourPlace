@@ -239,6 +239,7 @@ public class PersonalData extends Fragment {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d("TAG", "User data updated successfully");
+                Toast.makeText(getContext(),"The data was saved successfully", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

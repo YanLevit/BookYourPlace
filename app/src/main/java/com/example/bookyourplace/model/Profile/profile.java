@@ -110,6 +110,7 @@ public class profile extends Fragment {
 
 
         pageAdapter.addFragment(new PersonalData(),"Personal Data");
+        pageAdapter.addFragment(new Security(), "Security");
 
         viewPager.setAdapter(pageAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -119,9 +120,6 @@ public class profile extends Fragment {
         bt_ProfileImageSave = root.findViewById(R.id.bt_ProfileImageSave);
         bt_ProfileImageSave.setVisibility(View.GONE);
         bt_Backhome_Profile = root.findViewById(R.id.bt_Backhome_Profile);
-
-
-       // pageAdapter.addFragment(new Security(), "Security");
 
     }
 
