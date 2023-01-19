@@ -1,11 +1,17 @@
 package com.example.bookyourplace.model.Profile;
 
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -20,12 +26,17 @@ import com.example.bookyourplace.model.User;
 
 import com.example.bookyourplace.model.hotel_manager.HotelManager;
 import com.example.bookyourplace.model.traveler.Traveler;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 
 
 public class profile extends Fragment {
@@ -33,11 +44,13 @@ public class profile extends Fragment {
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
     DocumentReference documentReference;
+    FirebaseStorage storage;
 
     TabLayout tabLayout;
     ViewPager viewPager;
     PageAdapter pageAdapter;
-
+    Uri profileImageUri;
+    StorageTask mUploadTask;
     User user;
     String typeUser;
     ImageView iv_ProfileImage;
@@ -136,6 +149,9 @@ public class profile extends Fragment {
             }
         });
 
+//        bt_ProfileImageEdit.setOnClickListener(v -> openFileChooser());
+//
+//        bt_ProfileImageSave.setOnClickListener(v -> saveProfileImage());
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -154,6 +170,96 @@ public class profile extends Fragment {
             }
         });
     }
+
+//    private void saveProfileImage() {
+//        if (profileImageUri != null) {
+//            if(!user.getImage().isEmpty()){
+//                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                StorageReference imageDeleteRef = storage.getReferenceFromUrl(user.getImage());
+//                imageDeleteRef.delete();
+//            }
+//
+//            // Code for showing progressDialog while uploading
+//            ProgressDialog progressDialog = new ProgressDialog(getContext());
+//            progressDialog.setTitle("Uploading...");
+//            progressDialog.show();
+//
+//            // Defining the child of storageReference
+//            String imageId = generateId() + "." + getFileExtension(profileImageUri);
+//            FirebaseStorage storage = FirebaseStorage.getInstance();
+//            storage.getReference().child(imageId)
+//                    .putBytes(convertImageToByte(profileImageUri))
+//                    .addOnSuccessListener(taskSnapshot -> {
+//                        storage.getReference().child(imageId).getDownloadUrl().addOnSuccessListener(uri -> {
+//                            // Success, Image uploaded
+//                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+//                            user.setImage(uri.toString());
+//                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                            db.collection("Travelers").document(userId).set(user)
+//                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<Void> task) {
+//                                            if(task.isSuccessful()){
+//                                                db.collection("hotel manager").document(userId).set(user)
+//                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                            @Override
+//                                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                                if(task.isSuccessful()){
+//                                                                    progressDialog.dismiss();
+//                                                                    bt_ProfileImageSave.setVisibility(View.GONE);
+//                                                                }else{
+//                                                                    Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
+//                                                                    progressDialog.dismiss();
+//                                                                }
+//                                                            }
+//                                                        });
+//        } else {
+//            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//
+//
+//    private void openFileChooser() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_PICK);
+//        startActivityForResult(intent,1);
+//    }
+//
+//
+//    public static String generateId(){
+//        // Alphanumeric characters
+//        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+//        String autoId = "";
+//
+//        for (int i = 0; i < 28; i++) {
+//            autoId += chars.charAt((int) Math.floor(Math.random() * chars.length()));
+//        }
+//
+//        return autoId;
+//    }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if(requestCode == 1 && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null){
+//            profileImageUri = data.getData();
+//
+//            Glide.with(this).load(profileImageUri).error(R.drawable.profile_pic_example).fitCenter().into(iv_ProfileImage);
+//
+//            bt_ProfileImageSave.setVisibility(View.VISIBLE);
+//
+//        }
+//    }
+//
+//    private String getFileExtension(Uri uri) {
+//        ContentResolver cR = getActivity().getContentResolver();
+//        MimeTypeMap mime = MimeTypeMap.getSingleton();
+//        return mime.getExtensionFromMimeType(cR.getType(uri));
+//    }
 
 }
 
