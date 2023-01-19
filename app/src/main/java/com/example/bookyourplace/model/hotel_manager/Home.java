@@ -25,8 +25,8 @@ public class Home  extends Fragment {
         super.onCreate(savedInstanceState);
 
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
-
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) { //This code is creating an instance of OnBackPressedCallback and setting it to
+            // handle when the back button is pressed. The handleOnBackPressed() method is empty in this case, so it won't do anything when the back button is pressed.
             @Override
             public void handleOnBackPressed() {
 
@@ -39,13 +39,13 @@ public class Home  extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.hotel_manager_fragment_home, container, false);
+        View root = inflater.inflate(R.layout.hotel_manager_fragment_home, container, false);// This line inflates the layout file for the fragment and returns it as a view.
 
-        initializeElements(root);
+        initializeElements(root);//This line calls the initializeElements(root) method to initialize the elements in the layout.
 
         return root;
     }
-    private void initializeElements(View root) {
+    private void initializeElements(View root) { //This method initializes the elements by connecting them to the corresponding views in the layout file.
 
         tv_NameMensage = root.findViewById(R.id.hotel_text); /// need to change that its just for check!!
 

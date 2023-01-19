@@ -30,16 +30,18 @@ public class ForgotPassword extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_forgot_password, container, false);
+        View root = inflater.inflate(R.layout.fragment_forgot_password, container, false);//This line inflates the layout file for the fragment and returns it as a view.
 
-        initializeElements(root);
 
-        clickListener(root);
+        initializeElements(root); //This line calls the initializeElements(root) method to initialize the elements in the layout.
+
+        clickListener(root); //This line calls the clickListener(root) method to set onClickListeners for the buttons.
+
 
         return root;
     }
 
-    private void initializeElements(View root) {
+    private void initializeElements(View root) { //This method initializes the elements by connecting them to the corresponding views in the layout file.
         bt_Backhome_reset =  root.findViewById(R.id.bt_Backhome_reset);
 
         et_EmailAddress =  root.findViewById(R.id.et_Reset_Email);
@@ -52,7 +54,8 @@ public class ForgotPassword extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
-    private void clickListener(final View root) {
+    private void clickListener(final View root) { //This method sets onClickListeners for the buttons. When the reset password button is clicked,
+        // it calls the resetPassword(root) method. When the back button is clicked, it navigates the user back to the login page.
         bt_Reset.setOnClickListener(v -> resetPassword(root));
 
         bt_Backhome_reset.setOnClickListener(v -> {
@@ -62,7 +65,9 @@ public class ForgotPassword extends Fragment {
 
 
 
-    private void resetPassword(View root) {
+    private void resetPassword(View root) {// This method is called when the user clicks the reset password button.
+        // It takes the email address entered by the user and sends a password reset email using the sendPasswordResetEmail method of FirebaseAuth.
+        // If the task is successful, it shows a toast message and navigates the user back to the login page. If not, it shows an error message.
         String email = et_EmailAddress.getText().toString().trim();
         boolean error = false;
 
@@ -84,7 +89,8 @@ public class ForgotPassword extends Fragment {
 
         progressBar_Reset.setVisibility(View.VISIBLE);
 
-        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> { //This code is using the sendPasswordResetEmail() method of the
+            // FirebaseAuth instance to send a password reset email to the email address that the user entered.
             if(task.isSuccessful()){
                 Toast.makeText(getContext(),"Check your email to reset your password!", Toast.LENGTH_LONG).show();
 

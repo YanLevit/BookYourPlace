@@ -44,7 +44,8 @@ public class Login extends Fragment {
     CheckBox cb_Remeber;
     FirebaseAuth mAuth;
 
-    String[] permissions = new String[]{
+    String[] permissions = new String[]{ //This declares a string array that contains a list of permissions that the app will request from the user.
+            // These permissions are used by the app to access specific features or data on the device.
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -54,17 +55,19 @@ public class Login extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_login, container, false);
+        View root = inflater.inflate(R.layout.fragment_login, container, false);//This method is called when the fragment is first created.
+        // It inflates the fragment_login layout and returns the root view of the layout.
 
-        checkPermissions();
 
-        initializeElements(root);
+        checkPermissions(); // is used to check if the app has the required permissions.
 
-        clickListener(root);
+        initializeElements(root); // is used to initialize all the UI elements.
 
-        getRemeberData();
+        clickListener(root); //s used to set the click listeners on the buttons and text view.
 
-        return root;
+        getRemeberData(); //is used to get the previously saved login information.
+
+        return root; //returns the root view of the layout.
     }
 
     private void initializeElements(View root) {
@@ -83,6 +86,9 @@ public class Login extends Fragment {
     }
 
     private void clickListener(View root) {
+        //This method sets click listeners on the login button, register button, and forgot password text view.
+        // When the login button is clicked, it calls the verifyData() method, when the register
+        // button is clicked it navigates to the registration screen and when the forgot password text view is clicked it navigates to the forgot password screen
 
         btLogin.setOnClickListener(v -> verifyData());
 
@@ -97,6 +103,10 @@ public class Login extends Fragment {
 
 
     private void verifyData(){
+        //This method is called when the login button is clicked. It gets the text from the email and password fields,
+        // trims any leading/trailing whitespaces and then checks if they are empty or not. It also checks if the email is in a valid format using the EMAIL_ADDRESS pattern.
+        // If any errors are found,
+        // it sets the error message on the corresponding input field and returns without logging in. If there are no errors, it calls the login(email,password) method.
         String email = inputEmail.getText().toString().trim();
         String password = inputPassword.getText().toString().trim();
         boolean error = false;
@@ -127,7 +137,14 @@ public class Login extends Fragment {
         login(email,password);
     }
 
+
+
     private void login(String email, String password) {
+    //is used to sign in to the app using the provided email and password. It calls the signInWithEmailAndPassword method on the mAuth instance,
+    // and sets a listener to check if the login is successful or not. If the login is successful and the checkbox is checked,
+    // it calls the saveRemeberData(email,password) method to save the email and password. If the user's email is not verified,
+    // it sends an email verification and prompts the user to check their email. If the email is verified it calls the verifyTypeUser(user.getUid())
+    // method to verify the user's account type.
 
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -164,6 +181,8 @@ public class Login extends Fragment {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = firestore.collection("Hotel Manager").document(userId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            ////This method is used to verify the type of user. It starts by creating an instance of FirebaseFirestore
+            //and creating a reference to the "Hotel Manager" collection and the document with the user's ID.
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -172,6 +191,8 @@ public class Login extends Fragment {
                         HotelManager manager = snapshot.toObject(HotelManager.class);
                         Toast.makeText(getContext(),"Login Successful",Toast.LENGTH_LONG).show();
                         Navigation.findNavController(getView()).navigate(R.id.action_login_to_hotel_manager_home);
+                        //his line retrieves the document from the "Hotel Manager" collection. If the task is successful and the document exists,
+                        // it converts the document to an object of the HotelManager class, shows a toast message, and navigates to the hotel manager home screen.
                     }else{
                         DocumentReference docRef = firestore.collection("Traveler").document(userId);
                         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -185,12 +206,13 @@ public class Login extends Fragment {
                                         Navigation.findNavController(getView()).navigate(R.id.action_login_to_traveler_home);
                                     }
                                 } else {
-                                    Log.d("ERROR", "get failed with ", task.getException());
+                                    Log.d("ERROR", "get failed with ", task.getException());//This method is used to determine whether the user is a Hotel Manager or
+                                    // a Traveler and navigate them to the appropriate home screen.
                                 }
                             }
                         });
                     }
-                } else {
+                } else { // This method is used to determine whether the user is a Hotel Manager or a Traveler and navigate them to the appropriate home screen.
                     Log.d("ERROR", "get failed with ", task.getException());
                 }
             }

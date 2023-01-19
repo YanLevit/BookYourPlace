@@ -179,7 +179,7 @@ public class Home extends Fragment {
         search_btn.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("inputText", textinput_location.getText().toString());
-            //Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search, bundle);
+            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
         });
 
 
