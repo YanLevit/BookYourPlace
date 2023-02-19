@@ -17,7 +17,6 @@ public class User implements Serializable {
     private String password;
     ////////////////    PREFERENCES    ////////////////
     private String language;
-    private boolean isGoogle;
     //////////////// PAYMENT DETAILS ////////////////
 
 
@@ -103,9 +102,6 @@ public class User implements Serializable {
         return language;
     }
 
-    public boolean isGoogle() {
-        return isGoogle;
-    }
     //////////////// GETS END ////////////////
 
     //////////////// SETS BEGIN ////////////////
@@ -143,7 +139,4 @@ public class User implements Serializable {
         this.language = language;
     }
 
-    public void setGoogle(boolean google) {
-        this.isGoogle = google;
-    }
 }

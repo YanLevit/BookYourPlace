@@ -98,9 +98,6 @@ public class Security extends Fragment {
         documentReference = db.collection(path).document(firebaseUser.getUid());
 
         ll_ChangePassword = root.findViewById(R.id.ll_ChangePassword);
-        if(user.isGoogle()){
-            ll_ChangePassword.setVisibility(View.GONE);
-        }
 
         et_Old_Password = root.findViewById(R.id.et_Old_Password);
         et_New_Password = root.findViewById(R.id.et_New_Password);

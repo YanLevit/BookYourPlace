@@ -7,28 +7,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HotelManager extends User implements Serializable {
-    private List<String> hotels; //This declares a private variable hotels of type List<String> which will be
-    // used to store a list of hotels that the hotel manager is associated with.
+    ////////////////     HOTELS     ////////////////
+    private List<String> hotels;
 
-
-
-    public HotelManager(){this.hotels = new ArrayList<>();} //This is a constructor for the HotelManager class.
-    // It creates a new empty ArrayList of type String and assigns it to the hotels variable.
-
-  /*  public HotelManager(String name, String surname, String phone, String email) {
-        super(name, surname, phone, email);
+    public HotelManager(){
         this.hotels = new ArrayList<>();
     }
-*/
-    public HotelManager(String name, String surname, String email, String phone, String password) { //This constructor is taking five arguments name, surname, email, phone
-        // , and password and it's calling the parent class User constructor to pass these arguments to the parent constructor
-        // and it creates a new empty ArrayList of type String and assigns it to the hotels variable.
 
+    public HotelManager(String name, String surname, String email, String phone, String password) {
         super(name, surname, email, phone, password);
         this.hotels = new ArrayList<>();
     }
 
     //////////////// GETS BEGIN ////////////////
+    public List<String> getHotels() {
+        return hotels;
+    }
+    //////////////// GETS END ////////////////
+
+    //////////////// SETS BEGIN ////////////////
+    public void setHotels(List<String> hotels) {
+        this.hotels = hotels;
+    }
+
+    public void addHotel(String hotel) {
+        if(hotels.isEmpty()){
+            hotels = new ArrayList<>();
+        }
+        this.hotels.add(hotel);
+    }
+
+    public void removeHotelbyIndex(int index) {
+        this.hotels.remove(index);
+    }
+
+    public void removeHotelbyObject(String hotel) {
+        int index = 0;
+        for(String id: hotels){
+            if(id == hotel){
+                hotels.remove(index);
+                break;
+            }
+            index++;
+        }
+    }
+    //////////////// SETS END ////////////////
 
 }
 

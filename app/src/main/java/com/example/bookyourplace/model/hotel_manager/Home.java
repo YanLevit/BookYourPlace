@@ -1,35 +1,95 @@
 package com.example.bookyourplace.model.hotel_manager;
 
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.bookyourplace.R;
+import com.example.bookyourplace.model.InternalStorage;
+import com.example.bookyourplace.model.traveler.Traveler;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.IOException;
 
 
 public class Home  extends Fragment {
 
+    FirebaseUser mUser;
+    FirebaseAuth mAuth;
+    DatabaseReference databaseReference;
+    Traveler user;
 
+    FusedLocationProviderClient fusedLocationProviderClient;
+    ConstraintLayout cl_HomeUser;
+    ShapeableImageView bt_ProfileMenu;
+    LinearLayout profileMenu;
+    Button bt_EditProfile, bt_Logout;
     TextView tv_NameMensage;
+    FloatingActionButton search_btn;
+    TextView textinput_location;
+    MaterialButton bt_register_hotel;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true ) { //This code is creating an instance of OnBackPressedCallback and setting it to
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) { //This code is creating an instance of OnBackPressedCallback and setting it to
             // handle when the back button is pressed. The handleOnBackPressed() method is empty in this case, so it won't do anything when the back button is pressed.
             @Override
             public void handleOnBackPressed() {
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.logout);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                //dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
+                dialog.setCancelable(false);
+
+                dialog.create();
+
+                Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
+                Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
+
+                confirm.setOnClickListener(v -> {
+                    bt_Logout.performClick();
+                    dialog.dismiss();
+                });
+
+                deny.setOnClickListener(v -> dialog.dismiss());
+
+                dialog.show();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -41,15 +101,113 @@ public class Home  extends Fragment {
 
         View root = inflater.inflate(R.layout.hotel_manager_fragment_home, container, false);// This line inflates the layout file for the fragment and returns it as a view.
 
-        initializeElements(root);//This line calls the initializeElements(root) method to initialize the elements in the layout.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        readUserData();
+
+        initializeElements(root);
+
+        //getLocation();
+
+        clickListener(root);
+
+        loadDatatoElements();
 
         return root;
+
     }
+
     private void initializeElements(View root) { //This method initializes the elements by connecting them to the corresponding views in the layout file.
 
-        tv_NameMensage = root.findViewById(R.id.hotel_text); /// need to change that its just for check!!
+        bt_ProfileMenu = root.findViewById(R.id.bt_ProfileMenu);
+
+        profileMenu = root.findViewById(R.id.ll_profile_menu_User);
+        profileMenu.setVisibility(View.GONE);
+
+        bt_EditProfile = root.findViewById(R.id.bt_editProfile_User);
+
+        bt_Logout = root.findViewById(R.id.bt_Logout_User);
+
+        cl_HomeUser = root.findViewById(R.id.cl_Home_User);
+
+        tv_NameMensage = root.findViewById(R.id.tv_NameMensage_User);
+
+        search_btn = root.findViewById(R.id.home_search_btn);
+        textinput_location = root.findViewById(R.id.textinput_location);
+
+        bt_register_hotel = root.findViewById(R.id.bt_register_hotel);
 
     }
 
+    private void clickListener(View root) {
+        cl_HomeUser.setOnClickListener(v -> profileMenu.setVisibility(View.GONE));
 
+        bt_ProfileMenu.setOnClickListener(v -> {
+            if (profileMenu.getVisibility() == View.GONE) {
+                profileMenu.setVisibility(View.VISIBLE);
+                profileMenu.bringToFront();
+            } else {
+                profileMenu.setVisibility(View.GONE);
+            }
+
+        });
+
+
+        bt_EditProfile.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("User", user);
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_profile, bundle);
+        });
+
+
+        bt_Logout.setOnClickListener(v -> {
+            mAuth.signOut();
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_login);
+        });
+
+        bt_register_hotel.setOnClickListener(view -> {
+            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_registration);
+        });
+    }
+
+    private void readUserData() {
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference docRef = firestore.collection("Hotel Manager").document(mUser.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot.exists()) {
+                        user = snapshot.toObject(Traveler.class);
+                        loadDatatoElements();
+                        try {
+                            InternalStorage.writeObject(getContext(), "User", user);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    Log.d("ERROR", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    private void loadDatatoElements() {
+        if (user != null) {
+            tv_NameMensage.setText("Hi " + user.getName());
+
+            Glide.with(this)
+                    .load(user.getImage())
+                    .placeholder(R.drawable.profile_pic_example)
+                    .fitCenter()
+                    .into(bt_ProfileMenu);
+        }
+    }
 }
+
+
+

@@ -56,7 +56,6 @@ public class Home extends Fragment {
     DatabaseReference databaseReference;
     Traveler user;
 
-    //GoogleSignInClient googleSignInClient;
      FusedLocationProviderClient fusedLocationProviderClient;
     ConstraintLayout cl_HomeUser;
     ShapeableImageView bt_ProfileMenu;
@@ -145,7 +144,6 @@ public class Home extends Fragment {
 
         favsBtn=root.findViewById(R.id.my_favs_btn2);
 
-       // bt_search_nearby = root.findViewById(R.id.bt_search_nearby);
         bt_search_onMap = root.findViewById(R.id.bt_search_onMap);
     }
 
@@ -234,13 +232,5 @@ public class Home extends Fragment {
                     .into(bt_ProfileMenu);
         }
     }
-
-    /*private void SearchByMods(View root,String mod)
-    {
-        Bundle bundle = new Bundle();
-        bundle.putString("modsWanted", mod);
-       // Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_search, bundle);
-    }*/
-
 
 }

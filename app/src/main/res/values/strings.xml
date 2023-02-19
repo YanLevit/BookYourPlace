@@ -14,8 +14,11 @@
     <string name="continue_with_google">Continue with Google</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="logout">Logout</string>
-    <string name="register_the_hotel">Register the hotel</string>
+    <string name="register_your_hotel">Register your hotel</string>
     <string name="manage_your_hotel">Manage your hotel</string>
+    <string name="add_cover_photo">Add cover photo</string>
+    <string name="hotel_name">Hotel Name</string>
+    <string name="hotel_rating">Hotel Rating</string>
 
     <string name="forgot_password">I forgot the password</string>
     <string name="forgot_password_title">Forgot your password?</string>
@@ -42,9 +45,35 @@
     <string name="password">Password</string>
     <string name="old_password">Old Password</string>
 
+    <string-array name="Features">
+        <item>Restaurant</item>
+        <item>Service Room</item>
+        <item>Pub</item>
+        <item>Lunch</item>
+        <item>Dinner</item>
+        <item>Breakfast</item>
+        <item>24h Reception</item>
+        <item>Air conditioner</item>
+        <item>Wifi</item>
+        <item>Outside Pool</item>
+        <item>Inside Pool</item>
+        <item>SPA</item>
+        <item>Garden</item>
+        <item>Gymnasium</item>
+        <item>Sauna</item>
+    </string-array>
 
     <string name="weak">Weak</string>
     <string name="medium">Medium</string>
     <string name="strong">Strong</string>
     <string name="very_strong">Very Strong</string>
+    <string name="total_rooms">Total Rooms</string>>
+    <string name="price_per_night">Price Per Night </string>
+    <string name="select_features_of_hotel">Select Features</string>
+    <string name="description">Descpription</string>
+    <string name="add_other_photos">Add Other Photos</string>
+    <string name="register_the_hotel">Register</string>
+    <string name="how_is_the_area_around">How is the area around ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
