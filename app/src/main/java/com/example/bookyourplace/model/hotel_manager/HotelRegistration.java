@@ -1,17 +1,13 @@
 package com.example.bookyourplace.model.hotel_manager;
 
-import android.Manifest;
+import com.example.bookyourplace.model.User;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Geocoder;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,57 +30,40 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.bumptech.glide.Glide;
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.Address;
 import com.example.bookyourplace.model.GenerateUniqueIds;
-import com.example.bookyourplace.model.InternalStorage;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
-
-import org.chromium.support_lib_boundary.util.Features;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-public class HotelRegistration  extends Fragment {
+
+public class HotelRegistration extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference databaseReferenceHotel, databaseReferenceManager;
@@ -135,7 +114,7 @@ public class HotelRegistration  extends Fragment {
     private SearchView searchView;
     private LatLng coordinates;
 
-    private HotelManager user;
+    private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -691,31 +670,82 @@ public class HotelRegistration  extends Fragment {
 
         Address address = new Address(country, city, address_string, zip_code);
 
-        hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price_room, starts, total_rooms, hotelFeatures);
-
+       // hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price_room, starts, total_rooms, hotelFeatures);
+        hotel = new Hotel(name, phone, description, address, firebaseAuth.getCurrentUser().getUid(), price_room, starts, total_rooms, hotelFeatures);
         registerOnFirebase(hotel);
 
     }
 
     private void registerOnFirebase(Hotel hotel) {
-        String hotelID = GenerateUniqueIds.generateId();
-        databaseReferenceHotel = FirebaseDatabase.getInstance().getReference("Hotel").child(hotelID);
+        // Save hotel data to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String hotelId = db.collection("hotels").document().getId();
+        db.collection("hotels").document(hotelId)
+                .set(hotel)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Hotel has been registered successfully!", Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(getView())
+                            .navigate(R.id.action_hotel_registration_to_hotel_manager_home); // check that !
+                    registerPhotosOnFirebase(hotelId);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Failed to register hotel! Try again!", Toast.LENGTH_LONG).show();
+                });
 
-        databaseReferenceHotel.setValue(hotel).addOnCompleteListener(task1 -> {
-            if (task1.isSuccessful()) {
-                Toast.makeText(getContext(), "Hotel has been registered successfully!", Toast.LENGTH_LONG).show();
-                registerPhotosOnFirebase(hotelID);
 
-                user.addHotel(hotelID);
-                databaseReferenceManager.setValue(user);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            String userId = firebaseUser.getUid();
 
-                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manager_home);
-            } else {
-                Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-            }
-        });
+            // Get the hotel manager's document using the hotel ID
+            db.collection("users").whereEqualTo("hotelId", hotelId).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    User hotelManager = queryDocumentSnapshots.getDocuments().get(0).toObject(User.class);
+                    String hotelManagerName = hotelManager.getName();
+                    String hotelManagerEmail = hotelManager.getEmail();
+                    String hotelManagerPhone = hotelManager.getPhone();
+
+                    // Update the user's hotelId field and navigate to the next screen
+                    db.collection("users").document(userId)
+                            .update("hotelId", hotelId)
+                            .addOnSuccessListener(aVoid1 -> {
+                                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manager_home);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Failed to update user data! Try again!", Toast.LENGTH_LONG).show();
+                            });
+                } else {
+                    Toast.makeText(getContext(), "Failed to find hotel manager with provided ID! Try again!", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Failed to retrieve hotel manager data! Try again!", Toast.LENGTH_LONG).show();
+            });
+        }
 
     }
+
+
+
+
+//    private void registerOnFirebase(Hotel hotel) {
+//        String hotelID = GenerateUniqueIds.generateId();
+//        databaseReferenceHotel = FirebaseDatabase.getInstance().getReference("Hotel").child(hotelID);
+//
+//        databaseReferenceHotel.setValue(hotel).addOnCompleteListener(task1 -> {
+//            if (task1.isSuccessful()) {
+//                Toast.makeText(getContext(), "Hotel has been registered successfully!", Toast.LENGTH_LONG).show();
+//                registerPhotosOnFirebase(hotelID);
+//
+//                user.addHotel(hotelID);
+//                databaseReferenceManager.setValue(user);
+//
+//                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manager_home);
+//            } else {
+//                Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
+//            }
+//        });
+//
+//    }
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getContentResolver();
