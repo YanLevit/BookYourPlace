@@ -53,6 +53,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
+        <ProgressBar
+            android:id="@+id/pb_ProfileImage"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_ProfileImage"
+            app:layout_constraintEnd_toEndOf="@+id/iv_ProfileImage"
+            app:layout_constraintStart_toStartOf="@+id/iv_ProfileImage"
+            app:layout_constraintTop_toTopOf="@+id/iv_ProfileImage" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
