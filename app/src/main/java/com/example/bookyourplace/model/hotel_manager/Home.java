@@ -46,7 +46,7 @@ public class Home  extends Fragment {
 
     FirebaseUser mUser;
     FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
+
     Traveler user;
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -73,7 +73,7 @@ public class Home  extends Fragment {
                 dialog.setContentView(R.layout.logout);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                //dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
                 dialog.setCancelable(false);
 

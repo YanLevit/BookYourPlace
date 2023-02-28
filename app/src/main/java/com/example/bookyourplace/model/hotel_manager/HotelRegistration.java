@@ -52,6 +52,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -66,7 +67,9 @@ import java.util.Map;
 public class HotelRegistration extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
-    private DatabaseReference databaseReferenceHotel, databaseReferenceManager;
+    //private DatabaseReference databaseReferenceHotel, databaseReferenceManager;
+
+    FirebaseFirestore db;
     private StorageReference storageReference;
     private Hotel hotel;
 
@@ -131,8 +134,8 @@ public class HotelRegistration extends Fragment {
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        databaseReferenceManager = FirebaseDatabase.getInstance().getReference("Hotel Manager").child(firebaseUser.getUid());
-        storageReference = FirebaseStorage.getInstance().getReference("Hotel");
+        db = FirebaseFirestore.getInstance();
+        //storageReference = FirebaseStorage.getInstance().getReference("Hotel");
 
         et_Name = root.findViewById(R.id.et_Hotel_Name);
 
@@ -269,7 +272,7 @@ public class HotelRegistration extends Fragment {
         dialog.setContentView(R.layout.fragment_dialog_upload_photos);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+       dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
         dialog.setCancelable(false);
 
@@ -652,17 +655,17 @@ public class HotelRegistration extends Fragment {
         }
 
 
-//        if (coverPhoto == null) {
-//            tv_title_cover_photo.setError("Select cover photo");
-//            tv_title_cover_photo.requestFocus();
-//            error = true;
-//        }
-//
-//        if (othersphotos.isEmpty()) {
-//            tv_title_others_photo.setError("Select others photos");
-//            tv_title_others_photo.requestFocus();
-//            error = true;
-//        }
+       if (coverPhoto == null) {
+           tv_title_cover_photo.setError("Select cover photo");
+          tv_title_cover_photo.requestFocus();
+           error = true;
+       }
+
+       if (othersphotos.isEmpty()) {
+           tv_title_others_photo.setError("Select others photos");
+            tv_title_others_photo.requestFocus();
+           error = true;
+       }
 
         if (error) {
             return;
@@ -678,7 +681,6 @@ public class HotelRegistration extends Fragment {
 
     private void registerOnFirebase(Hotel hotel) {
         // Save hotel data to Firestore
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         String hotelId = db.collection("hotels").document().getId();
         db.collection("hotels").document(hotelId)
                 .set(hotel)
@@ -727,31 +729,14 @@ public class HotelRegistration extends Fragment {
 
 
 
-//    private void registerOnFirebase(Hotel hotel) {
-//        String hotelID = GenerateUniqueIds.generateId();
-//        databaseReferenceHotel = FirebaseDatabase.getInstance().getReference("Hotel").child(hotelID);
-//
-//        databaseReferenceHotel.setValue(hotel).addOnCompleteListener(task1 -> {
-//            if (task1.isSuccessful()) {
-//                Toast.makeText(getContext(), "Hotel has been registered successfully!", Toast.LENGTH_LONG).show();
-//                registerPhotosOnFirebase(hotelID);
-//
-//                user.addHotel(hotelID);
-//                databaseReferenceManager.setValue(user);
-//
-//                Navigation.findNavController(getView()).navigate(R.id.action_hotel_registration_to_hotel_manager_home);
-//            } else {
-//                Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//    }
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
 
     private void registerPhotosOnFirebase(String hotelID) {
         if (othersphotos != null && coverPhoto != null) {
@@ -760,61 +745,61 @@ public class HotelRegistration extends Fragment {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            databaseReferenceHotel = FirebaseDatabase.getInstance().getReference().child("Hotel").child(hotelID);
+            // Get a reference to the Firestore document
+            DocumentReference hotelRef = FirebaseFirestore.getInstance().collection("hotels").document(hotelID);
 
-            StorageReference fileReference = storageReference.child(hotelID).child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
-            StorageTask<UploadTask.TaskSnapshot> mUploadCoverTask = fileReference.putFile(coverPhoto)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Success, Image uploaded
-                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
-                            hotel.setCoverPhoto(uri.toString());
-                            databaseReferenceHotel.setValue(hotel);
-                            progressDialog.dismiss();
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressDialog.dismiss();
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                    });
-
-            List<String> listothersphotos = new ArrayList<>();
-
-            for (Uri photo : othersphotos) {
-                StorageReference fileOthers = storageReference.child(hotelID).child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
-                StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
-                        .addOnSuccessListener(taskSnapshot -> {
-                            fileOthers.getDownloadUrl().addOnSuccessListener(uri -> {
-                                // Success, Image uploaded
-                                listothersphotos.add(uri.toString());
-
-                                if (listothersphotos.size() == othersphotos.size()) {
-                                    hotel.setOtherPhotos(listothersphotos);
-                                    databaseReferenceHotel.setValue(hotel);
+            // Upload the cover photo
+            StorageReference coverRef = FirebaseStorage.getInstance().getReference().child(hotelID).child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
+            UploadTask coverUploadTask = coverRef.putFile(coverPhoto);
+            coverUploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                // Get the download URL for the cover photo
+                return coverRef.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Uri coverDownloadUri = task.getResult();
+                    // Set the cover photo URL in the Firestore document
+                    hotelRef.update("coverPhoto", coverDownloadUri.toString());
+                    // Upload the other photos
+                    List<String> listothersphotos = new ArrayList<>();
+                    int numPhotos = othersphotos.size();
+                    for (Uri photo : othersphotos) {
+                        StorageReference otherRef = FirebaseStorage.getInstance().getReference().child(hotelID).child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
+                        UploadTask otherUploadTask = otherRef.putFile(photo);
+                        otherUploadTask.continueWithTask(task1 -> {
+                            if (!task1.isSuccessful()) {
+                                throw task1.getException();
+                            }
+                            // Get the download URL for the other photo
+                            return otherRef.getDownloadUrl();
+                        }).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                Uri otherDownloadUri = task1.getResult();
+                                listothersphotos.add(otherDownloadUri.toString());
+                                if (listothersphotos.size() == numPhotos) {
+                                    // Set the other photos URLs in the Firestore document
+                                    hotelRef.update("otherPhotos", listothersphotos);
                                     progressDialog.dismiss();
+                                    Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
                                 }
-
-                            }).addOnFailureListener(e -> {
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                        })
-                        .addOnProgressListener(taskSnapshot -> {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
+                            } else {
+                                Toast.makeText(getContext(), task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
+                            }
                         });
-            }
+                    }
+                } else {
+                    Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
         } else {
             Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
+
 //
 //    private void openMapDialog() {
 //
