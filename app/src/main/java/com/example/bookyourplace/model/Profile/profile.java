@@ -1,5 +1,6 @@
 package com.example.bookyourplace.model.Profile;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.bookyourplace.model.GenerateUniqueIds.generateId;
 import static com.google.common.io.Files.getFileExtension;
 
@@ -8,6 +9,8 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
@@ -42,8 +46,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class profile extends Fragment {
+    private static final int CAMERA_REQUEST_CODE =123 ;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
@@ -60,7 +70,7 @@ public class profile extends Fragment {
     ImageView iv_ProfileImage;
     ImageButton bt_ProfileImageEdit , bt_ProfileImageSave,  bt_Backhome_Profile;
 
-    private ProgressBar pb_ProfileImage;
+
 
 
     @Override
@@ -139,8 +149,7 @@ public class profile extends Fragment {
         bt_ProfileImageSave = root.findViewById(R.id.bt_ProfileImageSave);
         bt_ProfileImageSave.setVisibility(View.GONE);
         bt_Backhome_Profile = root.findViewById(R.id.bt_Backhome_Profile);
-        pb_ProfileImage = root.findViewById(R.id.pb_ProfileImage);
-        pb_ProfileImage.setVisibility(View.GONE);
+
     }
 
     private void clickListeners(View root) {
@@ -157,6 +166,7 @@ public class profile extends Fragment {
         });
 
         bt_ProfileImageEdit.setOnClickListener(v -> openFileChooser());
+
 
         bt_ProfileImageSave.setOnClickListener(v -> saveProfileImage());
 
@@ -177,6 +187,8 @@ public class profile extends Fragment {
             }
         });
     }
+
+
 
     private void saveProfileImage() {
         if (profileImageUri != null) {
@@ -203,16 +215,23 @@ public class profile extends Fragment {
                         user.setImage(uri.toString());
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("Travelers").document(userId).set(user)
+                        db.collection("Traveler").document(userId).set(user)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            db.collection("hotel manager").document(userId).set(user)
+                                            db.collection("Hotel Manager").document(userId).set(user)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
+                                                                // Load the user's new profile image
+                                                                Glide.with(getContext())
+                                                                        .load(user.getImage())
+                                                                        .error(R.drawable.profile_pic_example)
+                                                                        .fitCenter()
+                                                                        .into(iv_ProfileImage);
+
                                                                 progressDialog.dismiss();
                                                                 bt_ProfileImageSave.setVisibility(View.GONE);
                                                             } else {
@@ -231,26 +250,148 @@ public class profile extends Fragment {
 
     }
 
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_PICK);
-        startActivityForResult(intent,1);
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 1 && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null){
-            profileImageUri = data.getData();
-
-            Glide.with(this).load(profileImageUri).error(R.drawable.profile_pic_example).fitCenter().into(iv_ProfileImage);
-            pb_ProfileImage.setVisibility(View.VISIBLE);
-            bt_ProfileImageSave.setVisibility(View.VISIBLE);
-
+    private void openCamera() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            File imageFile = null;
+            try {
+                imageFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (imageFile != null) {
+                Uri imageUri = FileProvider.getUriForFile(getContext(), "com.example.travelapp.fileprovider", imageFile);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+            }
         }
     }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+        String currentPhotoPath = imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
+
+//    private void saveProfileImage() {
+//        if (profileImageUri != null) {
+//            if (!user.getImage().isEmpty()) {
+//                FirebaseStorage storage = FirebaseStorage.getInstance();
+//                StorageReference imageDeleteRef = storage.getReferenceFromUrl(user.getImage());
+//                imageDeleteRef.delete();
+//            }
+//        }
+//
+//        // Code for showing progressDialog while uploading
+//        ProgressDialog progressDialog = new ProgressDialog(getContext());
+//        progressDialog.setTitle("Uploading...");
+//        progressDialog.show();
+//
+//        // Defining the child of storageReference
+//        String imageId = generateId() + "." + getFileExtension(profileImageUri);
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        storage.getReference().child(imageId).putFile(profileImageUri)
+//                .addOnSuccessListener(taskSnapshot -> {
+//                    storage.getReference().child(imageId).getDownloadUrl().addOnSuccessListener(uri -> {
+//                        // Success, Image uploaded
+//                        Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+//                        user.setImage(uri.toString());
+//                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//                        db.collection("Travelers").document(userId).set(user)
+//                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task) {
+//                                        if (task.isSuccessful()) {
+//                                            db.collection("hotel manager").document(userId).set(user)
+//                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                        @Override
+//                                                        public void onComplete(@NonNull Task<Void> task) {
+//                                                            if (task.isSuccessful()) {
+//                                                                progressDialog.dismiss();
+//                                                                bt_ProfileImageSave.setVisibility(View.GONE);
+//                                                            } else {
+//                                                                Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
+//                                                                progressDialog.dismiss();
+//                                                            }
+//                                                        }
+//                                                    });
+//                                        } else {
+//                                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                });
+//                    });
+//                });
+//
+//    }
+
+    private void openFileChooser() {
+        // Create intent to open the phone's gallery
+        Intent intentGallery = new Intent();
+        intentGallery.setType("image/*");
+        intentGallery.setAction(Intent.ACTION_PICK);
+
+        // Create intent to open the phone's camera
+        Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // Create intent to show chooser dialog
+        Intent chooserIntent = Intent.createChooser(intentGallery, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {intentCamera});
+
+        startActivityForResult(chooserIntent, 1);
+    }
+
+
+//    private void openFileChooser() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_PICK);
+//        startActivityForResult(intent,1);
+//    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            profileImageUri = data.getData();
+
+            Glide.with(this)
+                    .load(profileImageUri)
+                    .error(R.drawable.profile_pic_example)
+                    .fitCenter()
+                    .into(iv_ProfileImage);
+
+
+            bt_ProfileImageSave.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            profileImageUri = data.getData();
+//
+//            Glide.with(this)
+//                    .load(profileImageUri)
+//                    .error(R.drawable.profile_pic_example)
+//                    .fitCenter()
+//                    .into(iv_ProfileImage);
+//
+//            pb_ProfileImage.setVisibility(View.VISIBLE);
+//            bt_ProfileImageSave.setVisibility(View.VISIBLE);
+//        }
+//    }
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getContentResolver();
