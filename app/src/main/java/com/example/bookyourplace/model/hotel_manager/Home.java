@@ -23,18 +23,15 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.InternalStorage;
-import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,7 +44,7 @@ public class Home  extends Fragment {
     FirebaseUser mUser;
     FirebaseAuth mAuth;
 
-    Traveler user;
+    HotelManager user;
 
     FusedLocationProviderClient fusedLocationProviderClient;
     ConstraintLayout cl_HomeUser;
@@ -181,7 +178,7 @@ public class Home  extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
-                        user = snapshot.toObject(Traveler.class);
+                        user = snapshot.toObject(HotelManager.class);
                         loadDatatoElements();
                         try {
                             InternalStorage.writeObject(getContext(), "User", user);
