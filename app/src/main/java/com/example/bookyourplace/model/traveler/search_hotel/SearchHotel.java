@@ -95,12 +95,14 @@ public class SearchHotel extends Fragment {
                     String homeSearchQuery = bundle.getString("inputText").toLowerCase();
                     if (TextUtils.isEmpty(homeSearchQuery.trim())) {
                         mResultInfo.setText("All");
+                        loadData(homeSearchQuery,root);
                     } else {
                         mResultInfo.setText(homeSearchQuery);
                         loadData(homeSearchQuery, root);
                     }
                 } else {
                     mResultInfo.setText("All");
+                    loadData(searchQuery,root);
                 }
             }
         });
@@ -139,7 +141,6 @@ private void loadData(String searchQuery, View root) {
                 .whereLessThanOrEqualTo("address.city", searchQuery + "\uf8ff")
                 .orderBy("address.city", Query.Direction.ASCENDING);
     }
-
 
     FirestoreRecyclerOptions<Hotel> options = new FirestoreRecyclerOptions.Builder<Hotel>()
             .setQuery(query, Hotel.class)
