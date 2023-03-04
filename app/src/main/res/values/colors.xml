@@ -21,6 +21,7 @@
     <color name="accent_color_dark">#000EFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="yellow">#F6D55C</color>
+    <color name="gold">#FFD700</color>
     <!-- this is for overriding the edittext outlined border color when in normal state -->
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">@color/tertiary_white</color>
 </resources>

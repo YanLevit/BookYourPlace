@@ -1,12 +1,14 @@
 package com.example.bookyourplace.model.traveler;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,9 +44,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 //import com.google.type.LatLng;
 
 import java.io.IOException;
@@ -175,11 +179,10 @@ public class Home extends Fragment {
 
 
         search_btn.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("inputText", textinput_location.getText().toString());
-            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
-        });
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("inputText", textinput_location.getText().toString());
+                    Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
+                });
 
         bt_search_onMap.setOnClickListener(v -> {
            // Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_hotel_on_map);
