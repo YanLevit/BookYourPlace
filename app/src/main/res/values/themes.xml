@@ -19,4 +19,12 @@
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
     </style>
 
+    <style name="date_dialog_theme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/accent_color</item>                   <!--header background-->
+        <item name="android:windowBackground">@color/background_color</item>     <!--calendar background-->
+        <item name="android:colorControlActivated">@color/accent_color</item> <!--selected day-->
+        <item name="android:textColorPrimary">@color/white</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/white</item>    <!--days of the week-->
+    </style>
+
 </resources>

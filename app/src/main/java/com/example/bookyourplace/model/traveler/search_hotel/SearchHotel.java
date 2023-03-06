@@ -107,29 +107,6 @@ public class SearchHotel extends Fragment {
             }
         });
 
-
-        mResultList.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mResultList, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                //go-to hotel page
-                Bundle bundle = new Bundle();
-                List<String> keys=new ArrayList<>();
-
-                if(filteredResults.isEmpty())
-                    for(Map.Entry<Hotel,String> entry : searchResults.entrySet())
-                        keys.add(entry.getValue());
-                else
-                    for(Map.Entry<Hotel,String> entry : filteredResults.entrySet())
-                        keys.add(entry.getValue());
-
-                bundle.putString("clickDetails", keys.get(position));
-                bundle.putString("PreviousFragment","Search");
-//                Navigation.findNavController(root).navigate(R.id.action_search_hotel_to_traveler_hotelview, bundle);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {}
-        }));
     }
 
 private void loadData(String searchQuery, View root) {
@@ -166,10 +143,13 @@ private void loadData(String searchQuery, View root) {
 
             holder.itemView.setOnClickListener(v -> {
                 //go-to hotel page
+
+                String hotelId = getSnapshots().getSnapshot(position).getId();
                 Bundle bundle = new Bundle();
-                bundle.putString("clickDetails", getSnapshots().getSnapshot(position).getId());
+                bundle.putString("hotelId", hotelId);
+                //bundle.putString("clickDetails", getSnapshots().getSnapshot(position).getId());
                 bundle.putString("PreviousFragment", "Search");
-               // Navigation.findNavController(root).navigate(R.id.action_search_hotel_to_traveler_hotelview, bundle);
+                Navigation.findNavController(root).navigate(R.id.action_searchHotel_to_hotelViewer, bundle);
             });
         }
     };
