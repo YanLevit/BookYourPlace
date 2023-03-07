@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
@@ -37,6 +38,7 @@ public class MyBookings extends Fragment {
     private ArrayList<String> bookingKeys;
 
     private FirebaseFirestore db;
+    ImageButton bt_backHOme;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +49,8 @@ public class MyBookings extends Fragment {
 
             @Override
             public void handleOnBackPressed() {
-                Navigation.findNavController(getView()).navigate(R.id.action_myBookings_to_traveler_home);
+//                Navigation.findNavController(getView()).navigate(R.id.action_myBookings_to_traveler_home);
+                bt_backHOme.performClick();
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
@@ -67,13 +70,21 @@ public class MyBookings extends Fragment {
         return root;
     }
 
-    private void clickListener(View root) {
-    }
-
     private void initializeElements(View root) {
         db = FirebaseFirestore.getInstance();
         recyclerView = root.findViewById(R.id.bookingsList_recyclerView);
+        bt_backHOme = root.findViewById(R.id.bt_Backhome_bookings);
     }
+
+    private void clickListener(View root) {
+        bt_backHOme.setOnClickListener(v -> {
+
+            Navigation.findNavController(root).navigate(R.id.action_myBookings_to_traveler_home);
+
+        });
+    }
+
+
 
     private void getBookingRefs(View root) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

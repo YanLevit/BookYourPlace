@@ -2,7 +2,6 @@ package com.example.bookyourplace.model.Profile;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.bookyourplace.model.GenerateUniqueIds.generateId;
-import static com.google.common.io.Files.getFileExtension;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
