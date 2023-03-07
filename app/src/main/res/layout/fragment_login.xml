@@ -40,7 +40,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/booklogo" />
+                app:srcCompat="@drawable/logoapp" />
 
             <TextView
                 android:id="@+id/tv_Forgot_Password"

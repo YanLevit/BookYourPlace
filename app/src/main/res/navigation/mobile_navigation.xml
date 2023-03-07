@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_traveler_home_to_searchHotel"
             app:destination="@id/searchHotel" />
+        <action
+            android:id="@+id/action_traveler_home_to_myBookings"
+            app:destination="@id/myBookings" />
     </fragment>
     <fragment
         android:id="@+id/hotel_manager_home"
@@ -119,6 +122,17 @@
         <action
             android:id="@+id/action_hotelViewer_self"
             app:destination="@id/hotelViewer" />
+    </fragment>
+    <fragment
+        android:id="@+id/myBookings"
+        android:name="com.example.bookyourplace.model.traveler.myBookings.MyBookings"
+        android:label="MyBookings" >
+        <action
+            android:id="@+id/action_myBookings_to_traveler_home"
+            app:destination="@id/traveler_home" />
+        <action
+            android:id="@+id/action_myBookings_self"
+            app:destination="@id/myBookings" />
     </fragment>
 
 </navigation>
