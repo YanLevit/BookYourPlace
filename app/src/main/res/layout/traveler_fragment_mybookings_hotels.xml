@@ -8,18 +8,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-41dp"
+        tools:layout_editor_absoluteY="73dp">
 
         <TextView
             android:id="@+id/textView16"
             style="?attr/textAppearanceHeadline4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginTop="5dp"
             android:text="My Bookings"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/bt_Backhome_bookings" />
 
         <ScrollView
             android:id="@+id/scrollView5"
@@ -43,6 +45,14 @@
                     android:layout_marginTop="32dp" />
             </LinearLayout>
         </ScrollView>
+
+        <ImageButton
+            android:id="@+id/bt_Backhome_bookings"
+            android:layout_width="47dp"
+            android:layout_height="43dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
