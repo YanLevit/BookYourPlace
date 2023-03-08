@@ -56,7 +56,6 @@ public class profile extends Fragment {
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
     DocumentReference documentReference;
-    FirebaseStorage storage;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -67,6 +66,8 @@ public class profile extends Fragment {
     String typeUser;
     ImageView iv_ProfileImage;
     ImageButton bt_ProfileImageEdit , bt_ProfileImageSave,  bt_Backhome_Profile;
+
+
 
 
 
@@ -213,30 +214,47 @@ public class profile extends Fragment {
                         user.setImage(uri.toString());
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("Traveler").document(userId).set(user)
+                        if(db.collection("Traveler").document(userId).getId().equals(userId)){
+                            db.collection("Traveler").document(userId).set(user)
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
-                                            db.collection("Hotel Manager").document(userId).set(user)
-                                                    .addOnCompleteListener(task1 -> {
-                                                        if (task1.isSuccessful()) {
-                                                             //Load the user's new profile image
-                                                            Glide.with(getContext())
-                                                                    .load(user.getImage())
-                                                                    .error(R.drawable.profile_pic_example)
-                                                                    .fitCenter()
-                                                                    .into(iv_ProfileImage);
-
-                                                            progressDialog.dismiss();
-                                                            bt_ProfileImageSave.setVisibility(View.GONE);
-                                                        } else {
-                                                            Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
-                                                            progressDialog.dismiss();
-                                                        }
-                                                    });
-                                        } else {
-                                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+                                            db.collection("Traveler").document(userId).update("image",uri.toString());
+                                            Glide.with(getContext())
+                                                    .load(user.getImage())
+                                                    .error(R.drawable.profile_pic_example)
+                                                    .fitCenter()
+                                                    .into(iv_ProfileImage);
+                                            progressDialog.dismiss();
+                                            bt_ProfileImageSave.setVisibility(View.GONE);
+                                        }else {
+                                            Toast.makeText(getContext(),"Error uploading data" , Toast.LENGTH_SHORT).show();
                                         }
                                     });
+
+                        }
+                        else if (db.collection("Hotel Manger").document(userId).getId().equals(userId)) {
+                            db.collection("Hotel Manager").document(userId).set(user)
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            db.collection("Hotel Manager").document(userId).update("image",uri.toString());
+                                            //Load the user's new profile image
+                                            Glide.with(getContext())
+                                                    .load(user.getImage())
+                                                    .error(R.drawable.profile_pic_example)
+                                                    .fitCenter()
+                                                    .into(iv_ProfileImage);
+
+                                            progressDialog.dismiss();
+                                            bt_ProfileImageSave.setVisibility(View.GONE);
+                                        } else {
+                                            Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                        }
+                        else {
+                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 });
     }

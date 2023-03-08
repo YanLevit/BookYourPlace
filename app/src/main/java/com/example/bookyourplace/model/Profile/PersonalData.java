@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.InternalStorage;
@@ -116,6 +117,12 @@ public class PersonalData extends Fragment {
             @Override
             public void onClick(View v) {
                 savePersonalData();
+                if(db.collection("Traveler").document(firebaseUser.getUid()).getId().equals(firebaseUser.getUid())){
+                    Navigation.findNavController(v).navigate(R.id.action_profile_to_traveler_home);
+                }
+                else if (db.collection("Hotel Manager").document(firebaseUser.getUid()).getId().equals(firebaseUser.getUid())){
+                    Navigation.findNavController(v).navigate(R.id.action_profile_to_hotel_manager_home);
+                }
             }
         });
 
@@ -250,6 +257,5 @@ public class PersonalData extends Fragment {
 
 
     }
-
 
 }
