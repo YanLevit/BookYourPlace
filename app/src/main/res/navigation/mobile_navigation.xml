@@ -74,6 +74,12 @@
         <action
             android:id="@+id/action_hotel_manager_home_to_hotel_registration"
             app:destination="@id/hotel_registration" />
+        <action
+            android:id="@+id/action_hotel_manager_home_to_hotel_manager_hotel_view"
+            app:destination="@id/hotel_manager_hotel_view" />
+        <action
+            android:id="@+id/action_hotel_manager_home_to_hotel_manager_hotel_edit"
+            app:destination="@id/hotel_manager_hotel_edit" />
     </fragment>
     <fragment
         android:id="@+id/profile"
@@ -134,5 +140,38 @@
             android:id="@+id/action_myBookings_self"
             app:destination="@id/myBookings" />
     </fragment>
+    <fragment
+        android:id="@+id/hotel_manager_hotel_view"
+        android:name="com.example.bookyourplace.model.hotel_manager.Hotel_View"
+        android:label="fragment_hotel_manager_hotel_view"
+        tools:layout="@layout/fragment_hotel_manager_hotel_view" >
+        <action
+            android:id="@+id/action_hotel_manager_hotel_view_to_hotel_manager_home"
+            app:destination="@id/hotel_manager_home" />
+        <action
+            android:id="@+id/action_hotel_manager_hotel_view_to_hotel_manager_hotel_edit"
+            app:destination="@id/hotel_manager_hotel_edit" />
+    </fragment>
+    <fragment
+        android:id="@+id/hotel_manager_hotel_edit"
+        android:name="com.example.bookyourplace.model.hotel_manager.Hotel_Edit"
+        android:label="fragment_hotel_manager_hotel_edit"
+        tools:layout="@layout/fragment_hotel_manager_hotel_edit" >
+        <action
+            android:id="@+id/action_hotel_manager_hotel_edit_to_hotel_manager_home"
+            app:destination="@id/hotel_manager_home" />
+        <action
+            android:id="@+id/action_hotel_manager_hotel_edit_to_hotel_manager_hotel_view"
+            app:destination="@id/hotel_manager_hotel_view" />
+    </fragment>
+    <!--    <argument-->
+<!--        android:name="Hotel"-->
+<!--        app:argType="com.example.bookyourplace.model.hotel_manager.Hotel" />-->
+<!--    <argument-->
+<!--        android:name="Hotel Name"-->
+<!--        app:argType="string" />-->
+<!--    <argument-->
+<!--        android:name="PreviousFragment"-->
+<!--        app:argType="string" />-->
 
 </navigation>

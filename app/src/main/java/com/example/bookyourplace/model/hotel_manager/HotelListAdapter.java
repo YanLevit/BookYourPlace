@@ -120,10 +120,6 @@ public class HotelListAdapter extends RecyclerView.Adapter<HotelListAdapter.Hote
 
         holder.hotel_item_Name.setText(currentItem.getName());
 
-        if(position == 0){
-            holder.ll_hotel_item_buttons.setVisibility(View.GONE);
-        }
-
     }
     @Override
     public int getItemCount() {

@@ -395,7 +395,7 @@ public class HotelRegistration extends Fragment {
 
     private void sliderClick(int requestCode) {
         mainslider.setItemClickListener(e -> {
-            Context wrapper = new ContextThemeWrapper(getContext(), com.google.android.material.R.style.Base_Theme_Material3_Light_Dialog);
+            Context wrapper = new ContextThemeWrapper(getContext(), R.style.popupMenuStyle);
             PopupMenu popupMenu = new PopupMenu(wrapper, tv_popupMenu, Gravity.CENTER, 0, 0);
 
             //param 2 is menu id, param 3 is position of this menu item in menu items list, param 4 is title of the menu
@@ -408,7 +408,6 @@ public class HotelRegistration extends Fragment {
             }
 
             final float[] rotate = {0};
-
             popupMenu.setOnMenuItemClickListener(item -> {
                 ImageView iv_photo_full = dialog.findViewById(R.id.iv_photo_full);
 
@@ -725,11 +724,6 @@ public class HotelRegistration extends Fragment {
         }
 
     }
-
-
-
-
-
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getContentResolver();

@@ -260,14 +260,10 @@ public class Home  extends Fragment {
         mAdapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position == 0) {
-                    Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_registration);
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("Hotel", mHotelList.get(position));
-                    bundle.putString("Hotel Name", mHotelList.get(position).getName());
-//                    Navigation.findNavController(root).navigate(R.id.action_hotel_manage_to_hotel_view, bundle);
-                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("Hotel", mHotelList.get(position));
+                bundle.putString("Hotel Name", mHotelList.get(position).getName());
+                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
             }
 
             @Override
@@ -275,7 +271,7 @@ public class Home  extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("Hotel", mHotelList.get(position));
                 bundle.putString("Hotel Name", mHotelList.get(position).getName());
-//                Navigation.findNavController(root).navigate(R.id.action_hotel_manage_to_hotel_view, bundle);
+               Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
             }
 
             @Override
@@ -284,7 +280,7 @@ public class Home  extends Fragment {
                 bundle.putSerializable("Hotel", mHotelList.get(position));
                 bundle.putString("Hotel Name", mHotelList.get(position).getName());
                 bundle.putString("PreviousFragment","Hotel_Manage");
-//                Navigation.findNavController(root).navigate(R.id.action_hotel_manage_to_hotel_edit, bundle);
+                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_edit, bundle);
             }
 
             @Override
