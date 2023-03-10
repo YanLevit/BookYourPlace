@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,15 +51,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +92,8 @@ public class HotelRegistration extends Fragment {
 
     private TextView tv_Hotel_Moods_Title;
     private LinearLayout ll_Hotel_Moods;
-
+    private double latitude;
+    private double longitude;
 
     private LinearLayout ll_Hotel_Photos;
     private LinearLayout ll_Hotel_Cover_Photo;
@@ -670,13 +671,35 @@ public class HotelRegistration extends Fragment {
             return;
         }
 
-        Address address = new Address(country, city, address_string, zip_code);
 
-       // hotel = new Hotel(name, phone, description, address, firebaseUser.getUid(), price_room, starts, total_rooms, hotelFeatures);
-        hotel = new Hotel(name, phone, description, address, firebaseAuth.getCurrentUser().getUid(), price_room, starts, total_rooms, hotelFeatures);
-        registerOnFirebase(hotel);
+        Geocoder geocoder = new Geocoder(getContext());
+        try {
+            List<android.location.Address> addressList = geocoder.getFromLocationName(address_string, 1);
+            if (addressList != null && addressList.size() > 0) {
+                android.location.Address returnedAddress = addressList.get(0);
+                latitude = returnedAddress.getLatitude();
+                longitude = returnedAddress.getLongitude();
+                coordinates = new LatLng(latitude, longitude);
+
+                // Create and register the hotel object on Firebase
+                Address address = new Address(country, city, address_string, zip_code, coordinates.latitude, coordinates.longitude);
+                hotel = new Hotel(name, phone, description, address, firebaseAuth.getCurrentUser().getUid(), price_room, starts, total_rooms, hotelFeatures);
+                registerOnFirebase(hotel);
+            } else {
+                // Display error message to user
+                getActivity().runOnUiThread(() -> {
+                    et_Address.setError("Invalid address");
+                    et_Address.requestFocus();
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
 
     private void registerOnFirebase(Hotel hotel) {
         // Save hotel data to Firestore

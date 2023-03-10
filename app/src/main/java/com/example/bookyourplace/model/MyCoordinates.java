@@ -3,7 +3,6 @@ package com.example.bookyourplace.model;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
-
 public class MyCoordinates implements Serializable {
     private double latitude;
     private double longitude;

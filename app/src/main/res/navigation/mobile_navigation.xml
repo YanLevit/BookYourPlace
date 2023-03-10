@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_traveler_home_to_myBookings"
             app:destination="@id/myBookings" />
+        <action
+            android:id="@+id/action_traveler_home_to_hotelOnMap"
+            app:destination="@id/hotelOnMap" />
     </fragment>
     <fragment
         android:id="@+id/hotel_manager_home"
@@ -128,6 +131,9 @@
         <action
             android:id="@+id/action_hotelViewer_self"
             app:destination="@id/hotelViewer" />
+        <action
+            android:id="@+id/action_hotelViewer_to_hotelOnMap"
+            app:destination="@id/hotelOnMap" />
     </fragment>
     <fragment
         android:id="@+id/myBookings"
@@ -141,6 +147,7 @@
             app:destination="@id/myBookings" />
     </fragment>
     <fragment
+
         android:id="@+id/hotel_manager_hotel_view"
         android:name="com.example.bookyourplace.model.hotel_manager.Hotel_View"
         android:label="fragment_hotel_manager_hotel_view"
@@ -173,5 +180,22 @@
 <!--    <argument-->
 <!--        android:name="PreviousFragment"-->
 <!--        app:argType="string" />-->
+
+<!--        android:id="@+id/hotelOnMap"-->
+<!--        android:name="com.example.bookyourplace.model.Maps.HotelOnMap"-->
+<!--        android:label="HotelOnMap" >-->
+    <fragment
+        android:id="@+id/hotelOnMap"
+        android:name="com.example.bookyourplace.model.Maps.HotelOnMap"
+        android:label="HotelOnMap" >
+        <action
+            android:id="@+id/action_hotelOnMap_to_hotelViewer"
+            app:destination="@id/hotelViewer" />
+        <action
+            android:id="@+id/action_hotelOnMap_to_traveler_home"
+            app:destination="@id/traveler_home" />
+    </fragment>
+
+
 
 </navigation>

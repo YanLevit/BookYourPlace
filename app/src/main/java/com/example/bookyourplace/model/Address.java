@@ -3,14 +3,12 @@ package com.example.bookyourplace.model;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
-
 public class Address implements Serializable {
 
     private String country;
     private String city;
     private String address;
     private String zipcode;
-
     private MyCoordinates coordinates;
 
     public Address(){
@@ -23,6 +21,16 @@ public class Address implements Serializable {
         this.zipcode = zipcode;
     }
 
+    public Address(String country, String city, String address, String zipcode, double latitude, double longitude) {
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.zipcode = zipcode;
+
+        this.coordinates = new MyCoordinates(latitude,longitude);
+
+    }
+
     public Address(String country, String city, String address, String zipcode, MyCoordinates coordinates) {
         this.country = country;
         this.city = city;
@@ -31,18 +39,7 @@ public class Address implements Serializable {
         this.coordinates = coordinates;
     }
 
-    public Address(String country, String city, String address, String zipcode, double latitude, double longitude) {
-        this.country = country;
-        this.city = city;
-        this.address = address;
-        this.zipcode = zipcode;
-
-        this.coordinates = new MyCoordinates(latitude, longitude);
-
-    }
-
-
-        //////////////// GETS BEGIN ////////////////
+    //////////////// GETS BEGIN ////////////////
     public String getCountry() {
         return country;
     }
@@ -86,4 +83,10 @@ public class Address implements Serializable {
         this.zipcode = zipcode;
     }
 
+    public void setCoordinates(double latitude, double longitude) {
+        coordinates = new MyCoordinates(latitude,longitude);
+    }
+
+    //////////////// SETS END ////////////////
 }
+

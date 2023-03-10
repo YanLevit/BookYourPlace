@@ -185,7 +185,7 @@ public class Home extends Fragment {
                 });
 
         bt_search_onMap.setOnClickListener(v -> {
-           // Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_traveler_hotel_on_map);
+           Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_hotelOnMap);
         });
 
 
