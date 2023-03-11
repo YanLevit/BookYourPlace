@@ -88,6 +88,9 @@
         android:id="@+id/profile"
         android:name="com.example.bookyourplace.model.Profile.profile"
         android:label="profile" >
+        <argument
+            android:name="User"
+            app:argType="com.example.bookyourplace.model.User" />
         <action
             android:id="@+id/action_profile_to_hotel_manager_home"
             app:destination="@id/hotel_manager_home" />
@@ -102,6 +105,10 @@
         android:id="@+id/searchHotel"
         android:name="com.example.bookyourplace.model.traveler.search_hotel.SearchHotel"
         android:label="SearchHotel" >
+        <argument
+            android:name="inputText"
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_searchHotel_to_traveler_home"
             app:destination="@id/traveler_home" />
@@ -122,6 +129,22 @@
         android:id="@+id/hotelViewer"
         android:name="com.example.bookyourplace.model.traveler.hotels.HotelViewer"
         android:label="HotelViewer" >
+        <argument
+            android:name="Search"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="hotelId"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="clickDetails"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="info"
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_hotelViewer_to_traveler_home"
             app:destination="@id/traveler_home" />
@@ -152,6 +175,12 @@
         android:name="com.example.bookyourplace.model.hotel_manager.Hotel_View"
         android:label="fragment_hotel_manager_hotel_view"
         tools:layout="@layout/fragment_hotel_manager_hotel_view" >
+        <argument
+            android:name="Hotel"
+            app:argType="com.example.bookyourplace.model.hotel_manager.Hotel" />
+        <argument
+            android:name="Hotel Name"
+            app:argType="string" />
         <action
             android:id="@+id/action_hotel_manager_hotel_view_to_hotel_manager_home"
             app:destination="@id/hotel_manager_home" />
@@ -171,19 +200,7 @@
             android:id="@+id/action_hotel_manager_hotel_edit_to_hotel_manager_hotel_view"
             app:destination="@id/hotel_manager_hotel_view" />
     </fragment>
-    <!--    <argument-->
-<!--        android:name="Hotel"-->
-<!--        app:argType="com.example.bookyourplace.model.hotel_manager.Hotel" />-->
-<!--    <argument-->
-<!--        android:name="Hotel Name"-->
-<!--        app:argType="string" />-->
-<!--    <argument-->
-<!--        android:name="PreviousFragment"-->
-<!--        app:argType="string" />-->
 
-<!--        android:id="@+id/hotelOnMap"-->
-<!--        android:name="com.example.bookyourplace.model.Maps.HotelOnMap"-->
-<!--        android:label="HotelOnMap" >-->
     <fragment
         android:id="@+id/hotelOnMap"
         android:name="com.example.bookyourplace.model.Maps.HotelOnMap"

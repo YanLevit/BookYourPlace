@@ -83,7 +83,10 @@ public class Hotel_View extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_hotel_manager_hotel_view, container, false);
 
-        hotelId = getArguments().getString("Hotel Name");
+//        hotelId = getArguments().getString("Hotel Name");
+        Hotel_ViewArgs args = Hotel_ViewArgs.fromBundle(getArguments());
+        hotelId = args.getHotel().getName();
+
         initializeElements(root);
 
         getUserData();

@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 
 public class SearchHotel extends Fragment {
@@ -90,9 +92,9 @@ public class SearchHotel extends Fragment {
                 mResultInfo.setText(searchQuery);
                 loadData(searchQuery, root);
             } else {
-                Bundle bundle = getArguments();
-                if (bundle != null) {
-                    String homeSearchQuery = bundle.getString("inputText").toLowerCase();
+                SearchHotelArgs args = SearchHotelArgs.fromBundle(getArguments());
+                if (args != null) {
+                    String homeSearchQuery = args.getInputText().toLowerCase();
                     if (TextUtils.isEmpty(homeSearchQuery.trim())) {
                         mResultInfo.setText("All");
                         loadData(homeSearchQuery,root);
@@ -106,7 +108,6 @@ public class SearchHotel extends Fragment {
                 }
             }
         });
-
     }
 
 private void loadData(String searchQuery, View root) {
@@ -143,13 +144,9 @@ private void loadData(String searchQuery, View root) {
 
             holder.itemView.setOnClickListener(v -> {
                 //go-to hotel page
-
                 String hotelId = getSnapshots().getSnapshot(position).getId();
-                Bundle bundle = new Bundle();
-                bundle.putString("hotelId", hotelId);
-                //bundle.putString("clickDetails", getSnapshots().getSnapshot(position).getId());
-                bundle.putString("PreviousFragment", "Search");
-                Navigation.findNavController(root).navigate(R.id.action_searchHotel_to_hotelViewer, bundle);
+                NavDirections action = SearchHotelDirections.actionSearchHotelToHotelViewer("Search",hotelId,"","");
+                Navigation.findNavController(root).navigate(action);
             });
         }
     };
@@ -166,17 +163,10 @@ private void loadData(String searchQuery, View root) {
         mResultList.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
-
-        if(getArguments() != null){
-            if(getArguments().getString("inputText") != null){
-                String local = getArguments().getString("inputText");
-                if(local.isEmpty()){
-                    mResultInfo.setText("All");
-                }
-                else{
-                    mResultInfo.setText(local);
-                }
-            }
+        SearchHotelArgs args = SearchHotelArgs.fromBundle(getArguments());
+        String inputText = args.getInputText();
+        if(inputText!=null){
+            mResultInfo.setText(inputText);
         }
         else{
             mResultInfo.setText("All");

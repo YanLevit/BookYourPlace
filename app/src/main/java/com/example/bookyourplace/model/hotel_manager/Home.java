@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -260,18 +261,18 @@ public class Home  extends Fragment {
         mAdapter.setOnItemClickListener(new HotelListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Hotel", mHotelList.get(position));
-                bundle.putString("Hotel Name", mHotelList.get(position).getName());
-                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
+                Hotel hotel = mHotelList.get(position);
+                String hotelName = hotel.getName();
+                NavDirections action = HomeDirections.actionHotelManagerHomeToHotelManagerHotelView(hotel, hotelName);
+                Navigation.findNavController(root).navigate(action);
             }
 
             @Override
             public void onSeeClick(int position) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Hotel", mHotelList.get(position));
-                bundle.putString("Hotel Name", mHotelList.get(position).getName());
-               Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
+                Hotel hotel = mHotelList.get(position);
+                String hotelName = hotel.getName();
+                NavDirections action = HomeDirections.actionHotelManagerHomeToHotelManagerHotelView(hotel, hotelName);
+                Navigation.findNavController(root).navigate(action);
             }
 
             @Override

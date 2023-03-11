@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.example.bookyourplace.R;
@@ -57,7 +58,6 @@ import java.util.Map;
 
 public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
-    //private DatabaseReference databaseReference;
     FirebaseFirestore firestore;
 
     private static final int REQUEST_FINE_LOCATION = 40;
@@ -84,7 +84,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
     private boolean party=false,chill=false,adventure=false, sports=false;
 
     private LinkedHashMap<Hotel,String> hotelResults = new LinkedHashMap<>();
-    //private LinkedHashMap<Hotel,String> hotelfilteredResults = new LinkedHashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -320,27 +319,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
         });
     }
 
-//    private void getListHotel(){
-//
-//        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot snap : snapshot.getChildren()){
-//                    Hotel hotel = snap.getValue(Hotel.class);
-//                    if(hotel!=null ){
-//                        hotelResults.put(hotel,snap.getKey());
-//                    }
-//                }
-//                creatMarkers(hotelResults);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e("Error", error.getMessage());
-//            }
-//        });
-//    }
-
     private void getListHotel() {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference hotelsRef = firestore.collection("hotels");
@@ -404,10 +382,11 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
         mMap.setOnInfoWindowClickListener(marker -> {
             String[] info = marker.getSnippet().split("«");
-            Bundle bundle = new Bundle();
-            bundle.putString("clickDetails", info[4]);
-            bundle.putString("PreviousFragment", "SearchOnMap");
-            Navigation.findNavController(getView()).navigate(R.id.action_hotelOnMap_to_hotelViewer, bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("clickDetails", info[4]);
+//            bundle.putString("PreviousFragment", "SearchOnMap");
+            NavDirections action = HotelOnMapDirections.actionHotelOnMapToHotelViewer("","","clickDetails",info[4]);
+            Navigation.findNavController(getView()).navigate(action);
         });
 
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {

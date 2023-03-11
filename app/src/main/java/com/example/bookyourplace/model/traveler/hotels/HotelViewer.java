@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +67,6 @@ public class HotelViewer extends Fragment {
     private TextView hotelName, hotelPrice, hotelInfo, numOfRatings;
     private RatingBar rating;
     private String hotelKey;
-    private DatabaseReference databaseReference, databaseReferenceHotel, databaseReferenceTraveler;
     private ImageView iv_hotel_cover_photo;
     private ImageSlider othersphotosslider;
 
@@ -99,10 +99,12 @@ public class HotelViewer extends Fragment {
 
             @Override
             public void handleOnBackPressed() {
-                String fragment = getArguments().getString("PreviousFragment");
+                HotelViewerArgs args = HotelViewerArgs.fromBundle(getArguments());
+                String fragment = args.getSearch();
 
                 if(fragment != null && fragment.equals("Search")){
-                    Navigation.findNavController(getView()).navigate(R.id.action_hotelViewer_to_searchHotel);
+//                    Navigation.findNavController(getView()).navigate(R.id.action_hotelViewer_to_searchHotel);
+                    Navigation.findNavController(getView()).popBackStack();
                 }
 
             }
@@ -137,8 +139,8 @@ public class HotelViewer extends Fragment {
 
         iv_hotel_cover_photo = root.findViewById(R.id.iv_hotel_cover_photo);
         othersphotosslider = root.findViewById(R.id.hotel_slider_photos);
-
-        hotelKey = getArguments().getString("hotelId");
+        HotelViewerArgs args = HotelViewerArgs.fromBundle(getArguments());
+        hotelKey = args.getHotelId();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference hotelRef = db.collection("hotels");
 
@@ -147,7 +149,7 @@ public class HotelViewer extends Fragment {
         ////////////////////////////////
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        hotelID = getArguments().getString("hotelId");
+        hotelID = args.getHotelId();
 
         ivBooking = root.findViewById(R.id.iv_Booking);
         tv_date_start = root.findViewById(R.id.ti_choosen_start_date);
@@ -374,56 +376,6 @@ public class HotelViewer extends Fragment {
     }
 
 
-//    private void registerOnFirebase() {
-//        if (verifyData()) {
-//            String reservationID = GenerateUniqueIds.generateId();
-//            FirebaseDatabase.getInstance().getReference("Booking").child(reservationID).setValue(booking).addOnCompleteListener(task1 -> {
-//                if (task1.isSuccessful()) {
-//                    Toast.makeText(getContext(), "Booking has ben registered successfully!", Toast.LENGTH_LONG).show();
-//
-//                    databaseReferenceTraveler = FirebaseDatabase.getInstance().getReference().child("Traveler").child(firebaseUser.getUid());
-//
-//                    databaseReferenceTraveler.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            Traveler user = snapshot.getValue(Traveler.class);
-//
-//                            user.addBooking(reservationID);
-//                            databaseReferenceTraveler.setValue(user);
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//                            Log.e("ERROR", "getUser:onCancelled", error.toException());
-//                        }
-//                    });
-//
-//                    databaseReferenceHotel = FirebaseDatabase.getInstance().getReference().child("hotels").child(hotelID);
-//
-//                    databaseReferenceHotel.addListenerForSingleValueEvent(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                            Hotel hotel = snapshot.getValue(Hotel.class);
-//
-//                            hotel.addBooking(reservationID);
-//                            databaseReferenceHotel.setValue(hotel);
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError error) {
-//                            Log.e("ERROR", "getUser:onCancelled", error.toException());
-//                        }
-//                    });
-//
-//                    final NavController navController = Navigation.findNavController(getView());
-//                    navController.navigate(R.id.action_hotelViewer_to_traveler_home);
-//                } else {
-//                    Toast.makeText(getContext(), "Failed to register! Try again!", Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
-//
-//    }
 
 private void populateRecyclerViewOfHotel(Hotel hotel) {
     double lowerPrice, higherPrice;
@@ -452,7 +404,6 @@ private void populateRecyclerViewOfHotel(Hotel hotel) {
     });
 }
 
-
     private void setHotelFeatures(Hotel hotel) {
         Map<String, Boolean> hotelFeature = hotel.getFeature().getFeatures();
         ArrayList <String> listFeatures = new ArrayList<>();
@@ -466,7 +417,5 @@ private void populateRecyclerViewOfHotel(Hotel hotel) {
         rvFeatures.setAdapter(adapterFeatures);
         // Set layout manager to position the items
         rvFeatures.setLayoutManager(new GridLayoutManager(getContext(),2));
-
-
     }
 }

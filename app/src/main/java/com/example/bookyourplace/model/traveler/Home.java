@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 //import com.bumptech.glide.Glide;
@@ -86,7 +87,7 @@ public class Home extends Fragment {
                 dialog.setContentView(R.layout.logout);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                //dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
                 dialog.setCancelable(false);
 
@@ -166,9 +167,8 @@ public class Home extends Fragment {
         });
 
         bt_EditProfile.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("User", user);
-          Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_profile, bundle);
+            NavDirections action = HomeDirections.actionTravelerHomeToProfile(user);
+            Navigation.findNavController(root).navigate(action);
         });
 
 
@@ -179,9 +179,12 @@ public class Home extends Fragment {
 
 
         search_btn.setOnClickListener(v -> {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("inputText", textinput_location.getText().toString());
-                    Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("inputText", textinput_location.getText().toString());
+//                    Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
+            String inputText = textinput_location.getText().toString();
+            NavDirections action = HomeDirections.actionTravelerHomeToSearchHotel(inputText);
+            Navigation.findNavController(root).navigate(action);
                 });
 
         bt_search_onMap.setOnClickListener(v -> {
