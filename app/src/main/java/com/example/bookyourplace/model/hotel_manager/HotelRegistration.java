@@ -674,7 +674,7 @@ public class HotelRegistration extends Fragment {
 
         Geocoder geocoder = new Geocoder(getContext());
         try {
-            List<android.location.Address> addressList = geocoder.getFromLocationName(address_string, 1);
+            List<android.location.Address> addressList = geocoder.getFromLocationName(address_string+","+city+","+country, 1);
             if (addressList != null && addressList.size() > 0) {
                 android.location.Address returnedAddress = addressList.get(0);
                 latitude = returnedAddress.getLatitude();
