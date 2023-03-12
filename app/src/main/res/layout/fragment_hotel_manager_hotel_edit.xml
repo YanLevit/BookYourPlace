@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -74,7 +74,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
-                    android:id="@+id/tv_title_cover_photo"
+                    android:id="@+id/tv_title_cover_photo_edit"
                     style="?attr/textAppearanceSubtitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Cover_Photo">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_Hotel_Name"
+                    android:id="@+id/et_Hotel_Name_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/hotel_name"
@@ -123,7 +123,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_Hotel_Name">
 
                 <TextView
-                    android:id="@+id/tv_Hotel_Stars"
+                    android:id="@+id/tv_Hotel_Stars_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/hotel_rating"
@@ -133,7 +133,7 @@
                     android:textStyle="bold" />
 
                 <RatingBar
-                    android:id="@+id/rb_Hotel_Stars"
+                    android:id="@+id/rb_Hotel_Stars_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -163,7 +163,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Stars">
 
                 <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp_PhoneCode_Hotel"
+                    android:id="@+id/ccp_PhoneCode_Hotel_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:ccp_arrowColor="@color/black"
@@ -181,7 +181,7 @@
                     app:hintTextColor="@color/black">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_Phone_Hotel"
+                        android:id="@+id/et_Phone_Hotel_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/phone"
@@ -206,7 +206,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Phone">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_Hotel_Total_Rooms"
+                    android:id="@+id/et_Hotel_Total_Rooms_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/total_rooms"
@@ -230,7 +230,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_Hotel_Total_Rooms">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_Hotel_Price_Rooms"
+                    android:id="@+id/et_Hotel_Price_Rooms_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/price_per_night"
@@ -251,43 +251,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_Hotel_Price_Rooms"
                 tools:visibility="visible">
 
-                <LinearLayout
-                    android:id="@+id/ll_Hotel_GPS_Address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView15">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:padding="10dp" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:id="@+id/tv_title_gps_address"
-                        style="?attr/textAppearanceSubtitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Select Address on Map" />
-                </LinearLayout>
-
                 <com.hbb20.CountryCodePicker
-                    android:id="@+id/ccp_Hotel_Country"
+                    android:id="@+id/ccp_Hotel_Country_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -323,7 +288,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ccp_Country">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_Hotel_City"
+                        android:id="@+id/et_Hotel_City_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -350,7 +315,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tilCity">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_Hotel_Address"
+                        android:id="@+id/et_Hotel_Address_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -377,7 +342,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tilAddress">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_Hotel_ZipCode"
+                        android:id="@+id/et_Hotel_ZipCode_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -404,7 +369,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Address">
 
                 <TextView
-                    android:id="@+id/tv_Features_Selected"
+                    android:id="@+id/tv_Features_Selected_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -414,7 +379,7 @@
                     android:textStyle="bold" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    android:id="@+id/bt_Features"
+                    android:id="@+id/bt_Features_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -439,7 +404,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_Features">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_Description_Hotel"
+                    android:id="@+id/et_Description_Hotel_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/description"
@@ -449,7 +414,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
-                android:id="@+id/ll_Hotel_Photos"
+                android:id="@+id/ll_Hotel_Photos_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
@@ -477,7 +442,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
-                    android:id="@+id/tv_title_others_photo"
+                    android:id="@+id/tv_title_others_photo_edit"
                     style="?attr/textAppearanceSubtitle2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -486,46 +451,32 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView17"
-                style="?attr/textAppearanceHeadline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
-                android:text="@string/how_is_the_area_around"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Photos" />
-
-            <TextView
                 android:id="@+id/tv_Hotel_Moods_Title"
                 style="?attr/textAppearanceCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                tools:layout_editor_absoluteY="1318dp" />
 
             <LinearLayout
                 android:id="@+id/ll_Hotel_Moods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="35dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginEnd="35dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_Hotel_Moods_Title">
+                app:layout_constraintTop_toTopOf="@+id/tv_Hotel_Moods_Title">
 
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_RegisterHotel"
+                android:id="@+id/bt_EditHotel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"
                 android:text="@string/apply_changes"
                 app:icon="@drawable/ic_arrow_forward"
@@ -533,7 +484,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Moods" />
+                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Photos_edit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

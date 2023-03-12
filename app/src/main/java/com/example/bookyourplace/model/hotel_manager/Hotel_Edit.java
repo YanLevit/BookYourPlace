@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -47,12 +48,22 @@ import com.example.bookyourplace.model.GenerateUniqueIds;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -60,15 +71,16 @@ import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Hotel_Edit extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
+    //private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
-    private StorageReference storageReference;
+//    private StorageReference storageReference;
 
     private String hotelID;
     private Hotel hotel;
@@ -111,7 +123,7 @@ public class Hotel_Edit extends Fragment {
 
     private ImageButton bt_hotel_edit_back;
 
-    private MaterialButton bt_RegisterHotel;
+    private MaterialButton bt_EditHotel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,11 +140,11 @@ public class Hotel_Edit extends Fragment {
                     case "Hotel_View":
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("Hotel", hotel);
-                        bundle.putString("Hotel Id",hotelID);
-                        Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
+                        bundle.putString("Hotel Name",hotelID);
+                        Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_hotel_view, bundle);
                         break;
 
-                    case "Hotel_Home":
+                    case "Hotel_Manage":
                         Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
                         break;
                 }
@@ -146,6 +158,8 @@ public class Hotel_Edit extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_hotel_manager_hotel_edit, container, false);
+        Hotel_ViewArgs args = Hotel_ViewArgs.fromBundle(getArguments());
+        hotelID = args.getHotel().getName();
 
         initializeElements(root);
 
@@ -158,117 +172,150 @@ public class Hotel_Edit extends Fragment {
 
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        //firebaseUser = firebaseAuth.getCurrentUser();
 
-        et_Name = root.findViewById(R.id.et_Hotel_Name);
+        et_Name = root.findViewById(R.id.et_Hotel_Name_edit);
 
-        tv_Hotel_Stars = root.findViewById(R.id.tv_Hotel_Stars);
-        rb_Stars = root.findViewById(R.id.rb_Hotel_Stars);
+        tv_Hotel_Stars = root.findViewById(R.id.tv_Hotel_Stars_edit);
+        rb_Stars = root.findViewById(R.id.rb_Hotel_Stars_edit);
 
-        ccp_PhoneCode = root.findViewById(R.id.ccp_PhoneCode_Hotel);
-        et_Phone=root.findViewById(R.id.et_Phone_Hotel);
+        ccp_PhoneCode = root.findViewById(R.id.ccp_PhoneCode_Hotel_edit);
+        et_Phone=root.findViewById(R.id.et_Phone_Hotel_edit);
         ccp_PhoneCode.registerCarrierNumberEditText(et_Phone);
 
-        et_TotalRooms = root.findViewById(R.id.et_Hotel_Total_Rooms);
-        et_Price = root.findViewById(R.id.et_Hotel_Price_Rooms);
+        et_TotalRooms = root.findViewById(R.id.et_Hotel_Total_Rooms_edit);
+        et_Price = root.findViewById(R.id.et_Hotel_Price_Rooms_edit);
 
-        ll_Hotel_GPS_Address = root.findViewById(R.id.ll_Hotel_GPS_Address);
-        ccp_country = root.findViewById(R.id.ccp_Hotel_Country);
-        et_City = root.findViewById(R.id.et_Hotel_City);
-        et_Address = root.findViewById(R.id.et_Hotel_Address);
-        et_ZipCode = root.findViewById(R.id.et_Hotel_ZipCode);
+       // ll_Hotel_GPS_Address = root.findViewById(R.id.ll_Hotel_GPS_Address);
+        ccp_country = root.findViewById(R.id.ccp_Hotel_Country_edit);
+        et_City = root.findViewById(R.id.et_Hotel_City_edit);
+        et_Address = root.findViewById(R.id.et_Hotel_Address_edit);
+        et_ZipCode = root.findViewById(R.id.et_Hotel_ZipCode_edit);
 
-        et_Description = root.findViewById(R.id.et_Description_Hotel);
+        et_Description = root.findViewById(R.id.et_Description_Hotel_edit);
 
-        bt_Features = root.findViewById(R.id.bt_Features);
-        tv_Features_Selected = root.findViewById(R.id.tv_Features_Selected);
+        bt_Features = root.findViewById(R.id.bt_Features_edit);
+        tv_Features_Selected = root.findViewById(R.id.tv_Features_Selected_edit);
 
         ll_Hotel_Cover_Photo = root.findViewById(R.id.ll_Hotel_Cover_Photo);
-        tv_title_cover_photo = root.findViewById(R.id.tv_title_cover_photo);
-        ll_Hotel_Photos = root.findViewById(R.id.ll_Hotel_Photos);
-        tv_title_others_photo = root.findViewById(R.id.tv_title_others_photo);
+        tv_title_cover_photo = root.findViewById(R.id.tv_title_cover_photo_edit);
+        ll_Hotel_Photos = root.findViewById(R.id.ll_Hotel_Photos_edit);
+        tv_title_others_photo = root.findViewById(R.id.tv_title_others_photo_edit);
         othersphotos = new ArrayList<>();
 
         bt_hotel_edit_back = root.findViewById(R.id.bt_hotel_edit_back);
 
-        bt_RegisterHotel = root.findViewById(R.id.bt_RegisterHotel);
+        bt_EditHotel = root.findViewById(R.id.bt_EditHotel);
     }
 
     private void loadDatatoElements(View root) {
-        if(!getArguments().isEmpty()){
-            hotelID = getArguments().getString("Hotel Id");
+        if (!getArguments().isEmpty()) {
+            hotelID = getArguments().getString("Hotel Name");
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Hotel").child(hotelID);
-            storageReference = FirebaseStorage.getInstance().getReference("Hotel").child(hotelID);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseStorage storage = FirebaseStorage.getInstance();
 
-            hotel = (Hotel) getArguments().getSerializable("Hotel");
-            if(hotel != null){
-                et_Name.setText(hotel.getName());
-                rb_Stars.setRating(hotel.getStars());
+            CollectionReference hotelsRef = db.collection("hotels");
+            Query query = hotelsRef.whereEqualTo("name", hotelID).limit(1);
 
-                ccp_PhoneCode.setFullNumber(hotel.getPhone());
+            query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot querySnapshot) {
+                    if (!querySnapshot.isEmpty()) {
+                        DocumentSnapshot hotelDoc = querySnapshot.getDocuments().get(0);
+                        hotel = hotelDoc.toObject(Hotel.class);
 
-                et_TotalRooms.setText(String.valueOf(hotel.getTotal_Rooms()));
-                et_Price.setText(String.valueOf(hotel.getPrice()));
+                        et_Name.setText(hotel.getName());
+                        rb_Stars.setRating(hotel.getStars());
 
-                ccp_country.setDefaultCountryUsingNameCode(hotel.getAddress().getCountry());
-                ccp_country.resetToDefaultCountry();
-                et_City.setText(hotel.getAddress().getCity());
-                et_Address.setText(hotel.getAddress().getAddress());
-                et_ZipCode.setText(hotel.getAddress().getZipcode());
+                        ccp_PhoneCode.setFullNumber(hotel.getPhone());
 
-                if(hotel.getAddress().getCoordinates() != null){
-                    coordinates = hotel.getAddress().getCoordinates();
+                        et_TotalRooms.setText(String.valueOf(hotel.getTotal_Rooms()));
+                        et_Price.setText(String.valueOf(hotel.getPrice()));
+
+                        ccp_country.setDefaultCountryUsingNameCode(hotel.getAddress().getCountry());
+                        ccp_country.resetToDefaultCountry();
+                        et_City.setText(hotel.getAddress().getCity());
+                        et_Address.setText(hotel.getAddress().getAddress());
+                        et_ZipCode.setText(hotel.getAddress().getZipcode());
+
+                        if (hotel.getAddress().getCoordinates() != null) {
+                            coordinates = hotel.getAddress().getCoordinates();
+                        }
+
+                        et_Description.setText(hotel.getDescription());
+
+                        hotelFeatures = hotel.getFeature();
+
+                        if (!hotel.getCoverPhoto().isEmpty()) {
+                            StorageReference coverPhotoRef = storage.getReferenceFromUrl(hotel.getCoverPhoto());
+                            coverPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    coverPhoto = uri;
+                                }
+                            });
+                        } else {
+                            coverPhoto = null;
+                        }
+
+                        for (String photo : hotel.getOtherPhotos()) {
+                            StorageReference otherPhotoRef = storage.getReferenceFromUrl(photo);
+                            otherPhotoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    othersphotos.add(uri);
+                                }
+                            });
+                        }
+
+                        hotel_features_listern();
+                    } else {
+                        Navigation.findNavController(root).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
+                    }
                 }
-
-                et_Description.setText(hotel.getDescription());
-
-                hotelFeatures = hotel.getFeature();
-
-                if(!hotel.getCoverPhoto().isEmpty()){
-                    coverPhoto = Uri.parse(hotel.getCoverPhoto());
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w("TAG", "Error getting current bookings", e);
                 }
-                else{
-                    coverPhoto = null;
-                }
-
-
-                for(String photo : hotel.getOtherPhotos()){
-                    othersphotos.add(Uri.parse(photo));
-                }
-
-            }
-            else{
-                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
-            }
-        }
-        else{
+            });
+        } else {
             Navigation.findNavController(root).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
         }
     }
 
     private void clickListeners() {
         bt_hotel_edit_back.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("Hotel", hotel);
-            bundle.putString("Hotel Id",hotelID);
-            Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_view, bundle);
+            String fragment = getArguments().getString("PreviousFragment");
+
+            switch (fragment){
+                case "Hotel_View":
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("Hotel", hotel);
+                    bundle.putString("Hotel Name",hotelID);
+                    Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_hotel_view, bundle);
+                    break;
+
+                case "Hotel_Manage":
+                    Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
+                    break;
+            }
         });
 
-        bt_RegisterHotel.setOnClickListener(v -> {
-            verifyData();
+        bt_EditHotel.setOnClickListener(v -> {
+           verifyData();
         });
 
 
-        hotel_features_listern();
+       hotel_features_listern();
 
-        hotel_photos_listern();
+       hotel_photos_listern();
     }
 
-    public void hotel_features_listern(){
-        if(hotelFeatures == null){
+    public void hotel_features_listern() {
+        if (hotelFeatures == null) {
             hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
-
             tv_Features_Selected.setText("Features");
         }
 
@@ -277,10 +324,10 @@ public class Hotel_Edit extends Fragment {
         ArrayList<Integer> featuresSelected = new ArrayList<>();
 
         int index = 0;
-        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()){
+        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()) {
             featuresKeys[index] = entry.getKey();
             featuresValues[index] = entry.getValue();
-            if(entry.getValue()){
+            if (entry.getValue()) {
                 featuresSelected.add(index);
             }
             index++;
@@ -299,16 +346,15 @@ public class Hotel_Edit extends Fragment {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
             mBuilder.setTitle("Selected features of hotel");
             mBuilder.setMultiChoiceItems(featuresKeys, featuresValues, (dialogInterface, position, isChecked) -> {
-                if(isChecked){
+                if (isChecked) {
                     featuresSelected.add(position);
-                    hotelFeatures.setFeatures_Value(featuresKeys[position],true);
-                }else{
-                    hotelFeatures.setFeatures_Value(featuresKeys[position],false);
-                    featuresSelected.remove(position);
+                    hotelFeatures.setFeatures_Value(featuresKeys[position], true);
+                } else {
+                    featuresSelected.remove(Integer.valueOf(position));
+                    hotelFeatures.setFeatures_Value(featuresKeys[position], false);
                 }
             });
 
-            mBuilder.setCancelable(false);
             mBuilder.setPositiveButton("Ok", (dialogInterface, which) -> {
                 String item = "";
                 for (int i = 0; i < featuresSelected.size(); i++) {
@@ -319,7 +365,6 @@ public class Hotel_Edit extends Fragment {
                 }
                 Log.e("Features", hotelFeatures.toString());
                 tv_Features_Selected.setText(item);
-
             });
 
             mBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -328,14 +373,90 @@ public class Hotel_Edit extends Fragment {
                 for (int i = 0; i < featuresValues.length; i++) {
                     featuresValues[i] = false;
                     featuresSelected.clear();
+                    hotelFeatures.setFeatures_Value(featuresKeys[i], false);
                 }
-                tv_Features_Selected.setText("");
+                tv_Features_Selected.setText(",");
             });
 
             AlertDialog mDialog = mBuilder.create();
             mDialog.show();
         });
     }
+
+
+//    public void hotel_features_listern(){
+//        if(hotelFeatures == null){
+//            hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
+//
+//            tv_Features_Selected.setText("Features");
+//        }
+//
+//        String[] featuresKeys = new String[hotelFeatures.getHotelFeature()];
+//        boolean[] featuresValues = new boolean[hotelFeatures.getHotelFeature()];
+//        ArrayList<Integer> featuresSelected = new ArrayList<>();
+//
+//        int index = 0;
+//        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()){
+//            featuresKeys[index] = entry.getKey();
+//            featuresValues[index] = entry.getValue();
+//            if(entry.getValue()){
+//                featuresSelected.add(index);
+//            }
+//            index++;
+//        }
+//
+//        String featurename = "";
+//        for (int i = 0; i < featuresSelected.size(); i++) {
+//            featurename = featurename + featuresKeys[featuresSelected.get(i)];
+//            if (i != featuresSelected.size() - 1) {
+//                featurename = featurename + ", ";
+//            }
+//        }
+//        tv_Features_Selected.setText(featurename);
+//
+//        bt_Features.setOnClickListener(view -> {
+//            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+//            mBuilder.setTitle("Selected features of hotel");
+//            mBuilder.setMultiChoiceItems(featuresKeys, featuresValues, (dialogInterface, position, isChecked) -> {
+//                if(isChecked){
+//                    featuresSelected.add(position);
+//                    hotelFeatures.setFeatures_Value(featuresKeys[position],true);
+//                }else{
+//                    hotelFeatures.setFeatures_Value(featuresKeys[position],false);
+//                    featuresSelected.remove(position);
+//                }
+//            });
+//
+//            mBuilder.setPositiveButton("Ok", (dialogInterface, which) -> {
+//                for (int i = 0; i < featuresKeys.length; i++) {
+//                    hotelFeatures.setFeatures_Value(featuresKeys[i], featuresValues[i]);
+//                }
+//
+//                String item = "";
+//                for (int i = 0; i < featuresSelected.size(); i++) {
+//                    item = item + featuresKeys[featuresSelected.get(i)];
+//                    if (i != featuresSelected.size() - 1) {
+//                        item = item + ", ";
+//                    }
+//                }
+//                Log.e("Features", hotelFeatures.toString());
+//                tv_Features_Selected.setText(item);
+//            });
+//
+//            mBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> dialogInterface.dismiss());
+//
+//            mBuilder.setNeutralButton("Clear all", (dialogInterface, which) -> {
+//                for (int i = 0; i < featuresValues.length; i++) {
+//                    featuresValues[i] = false;
+//                    featuresSelected.clear();
+//                }
+//                tv_Features_Selected.setText("");
+//            });
+//
+//            AlertDialog mDialog = mBuilder.create();
+//            mDialog.show();
+//        });
+//    }
 
 
     private void hotel_photos_listern() {
@@ -787,18 +908,36 @@ public class Hotel_Edit extends Fragment {
 
     }
 
-    private void changeOnFirebase(){
-        databaseReference.setValue(hotel).addOnCompleteListener(task1 -> {
-            if(task1.isSuccessful()){
-                Toast.makeText(getContext(),"Hotel has ben registered successfully!", Toast.LENGTH_LONG).show();
-                changePhotosOnFirebase();
-            }
-            else {
-                Toast.makeText(getContext(),"Failed to register changes! Try again!", Toast.LENGTH_LONG).show();
-            }
-        });
+    private void changeOnFirebase() {
+        hotelID = getArguments().getString("Hotel Name");
 
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        CollectionReference hotelsRef = db.collection("hotels");
+        Query query = hotelsRef.whereEqualTo("name", hotelID).limit(1);
+
+        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+            String docId = documentSnapshot.getId();
+
+            db.collection("hotels").document(docId)
+                    .set(hotel)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getContext(), "Hotel has been registered successfully!", Toast.LENGTH_LONG).show();
+                            changePhotosOnFirebase();
+                        } else {
+                            Toast.makeText(getContext(), "Failed to register changes! Try again!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getContext(), "Failed to fetch hotel! Try again!", Toast.LENGTH_LONG).show();
+        });
     }
+
+
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getActivity().getContentResolver();
@@ -820,13 +959,13 @@ public class Hotel_Edit extends Fragment {
                 }
             }
             if(upadatel_cover && upadatel_others){
-                uploadCoverPhoto(true);
+               uploadCoverPhoto(true);
             }
             if(upadatel_cover && !upadatel_others){
-                uploadCoverPhoto(false);
+               uploadCoverPhoto(false);
             }
             if(!upadatel_cover && upadatel_others){
-                uploadOthersPhotos();
+               uploadOthersPhotos();
             }
             if(!upadatel_cover && !upadatel_others){
                 bt_hotel_edit_back.performClick();
@@ -838,86 +977,135 @@ public class Hotel_Edit extends Fragment {
         }
     }
 
-    private void uploadCoverPhoto(boolean value){
+
+
+    private void uploadCoverPhoto(boolean value) {
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Uploading...");
 
         if (!String.valueOf(coverPhoto).toLowerCase().startsWith("https://")) {
             progressDialog.show();
 
-            if(!hotel.getCoverPhoto().isEmpty()){
-                StorageReference imageDeleteRef = FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto());
-                imageDeleteRef.delete();
+            if (!hotel.getCoverPhoto().isEmpty()) {
+                FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto()).delete();
             }
-            StorageReference fileReference = storageReference.child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
-            StorageTask<UploadTask.TaskSnapshot> mUploadCoverTask = fileReference.putFile(coverPhoto)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        fileReference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            // Success, Image uploaded
-                            hotel.setCoverPhoto(uri.toString());
-                            databaseReference.setValue(hotel);
+            String coverPhotoFileName = GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto);
+            StorageReference coverPhotoRef = FirebaseStorage.getInstance().getReference().child("Cover").child(coverPhotoFileName);
+            UploadTask uploadTask = coverPhotoRef.putFile(coverPhoto);
 
-                            progressDialog.dismiss();
+            uploadTask.addOnProgressListener(snapshot -> {
+                double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                progressDialog.setMessage("Uploaded " + (int) progress + "%");
+            }).continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return coverPhotoRef.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
 
-                            if(value){
-                                uploadOthersPhotos();
-                            }
-                            else{
-                                bt_hotel_edit_back.performClick();
-                            }
-                        });
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("Error", e.getMessage());
-                        progressDialog.dismiss();
-                    })
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                    });
-        }
-    }
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    CollectionReference hotelsRef = db.collection("hotels");
 
-    private void uploadOthersPhotos(){
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setTitle("Uploading...");
+                    Query query = hotelsRef.whereEqualTo("name", hotelID).limit(1);
 
-        List<String> listothersphotos = new ArrayList<>();
+                    query.get().addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+                            DocumentSnapshot hotelDoc = querySnapshot.getDocuments().get(0);
+                            String hotelId = hotelDoc.getId();
 
-        for(Uri photo : othersphotos){
-            if (!String.valueOf(photo).toLowerCase().startsWith("https://")) {
-                progressDialog.show();
+                            Map<String, Object> updateData = new HashMap<>();
+                            updateData.put("coverPhoto", downloadUri.toString());
 
-                StorageReference fileOthers = storageReference.child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
-                StorageTask<UploadTask.TaskSnapshot> mUploadOtherTask = fileOthers.putFile(photo)
-                        .addOnSuccessListener(taskSnapshot -> {
-                            fileOthers.getDownloadUrl().addOnSuccessListener(uri -> {
-                                // Success, Image uploaded
-                                listothersphotos.add(uri.toString());
-
-                                if(listothersphotos.size() == othersphotos.size()){
-                                    hotel.setOtherPhotos(listothersphotos);
-                                    databaseReference.setValue(hotel);
-                                    progressDialog.dismiss();
-
+                            hotelsRef.document(hotelId).update(updateData).addOnSuccessListener(aVoid -> {
+                                hotel.setCoverPhoto(downloadUri.toString());
+                                progressDialog.dismiss();
+                                if (value) {
+                                    uploadOthersPhotos();
+                                } else {
                                     bt_hotel_edit_back.performClick();
                                 }
+                            }).addOnFailureListener(e -> {
+                                Log.e("Error", e.getMessage());
+                                progressDialog.dismiss();
                             });
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e("Error", e.getMessage());
-                            //Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            progressDialog.dismiss();
-                        })
-                        .addOnProgressListener(taskSnapshot -> {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
-                        });
-            }
-            else{
-                listothersphotos.add(photo.toString());
-            }
+                        }
+                    }).addOnFailureListener(e -> {
+                        Log.e("Error", e.getMessage());
+                        progressDialog.dismiss();
+                    });
+                } else {
+                    Log.e("Error", task.getException().getMessage());
+                    progressDialog.dismiss();
+                }
+            });
         }
     }
 
+
+    private void uploadOthersPhotos(){
+            if (othersphotos != null && coverPhoto != null) {
+                // Code for showing progressDialog while uploading
+                ProgressDialog progressDialog = new ProgressDialog(getContext());
+                progressDialog.setTitle("Uploading...");
+                progressDialog.show();
+
+                // Get a reference to the Firestore document
+                DocumentReference hotelRef = FirebaseFirestore.getInstance().collection("hotels").document(hotelID);
+
+                // Upload the cover photo
+                StorageReference coverRef = FirebaseStorage.getInstance().getReference().child(hotelID).child("Cover").child(GenerateUniqueIds.generateId() + "." + getFileExtension(coverPhoto));
+                UploadTask coverUploadTask = coverRef.putFile(coverPhoto);
+                coverUploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    // Get the download URL for the cover photo
+                    return coverRef.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Uri coverDownloadUri = task.getResult();
+                        // Set the cover photo URL in the Firestore document
+                        hotelRef.update("coverPhoto", coverDownloadUri.toString());
+                        // Upload the other photos
+                        List<String> listothersphotos = new ArrayList<>();
+                        int numPhotos = othersphotos.size();
+                        for (Uri photo : othersphotos) {
+                            StorageReference otherRef = FirebaseStorage.getInstance().getReference().child(hotelID).child("Others").child(GenerateUniqueIds.generateId() + "." + getFileExtension(photo));
+                            UploadTask otherUploadTask = otherRef.putFile(photo);
+                            otherUploadTask.continueWithTask(task1 -> {
+                                if (!task1.isSuccessful()) {
+                                    throw task1.getException();
+                                }
+                                // Get the download URL for the other photo
+                                return otherRef.getDownloadUrl();
+                            }).addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    Uri otherDownloadUri = task1.getResult();
+                                    listothersphotos.add(otherDownloadUri.toString());
+                                    if (listothersphotos.size() == numPhotos) {
+                                        // Set the other photos URLs in the Firestore document
+                                        hotelRef.update("otherPhotos", listothersphotos);
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                }
+                            });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+            } else {
+                Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+            }
+    }
 }
+
+
+
