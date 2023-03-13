@@ -82,4 +82,7 @@
     <string name="revenue_generated">Revenue generated:</string>
     <string name="last_bookings">Last Bookings</string>
     <string name="edit_your_hotel">Edit your hotel!</string>
+    <string name="hotels_that_meet_you_search">Hotels that meet you search</string>
+    <string name="place_name_found">Place Name found</string>
+    <string name="the_weather_is">The Weather Is:</string>
 </resources>
