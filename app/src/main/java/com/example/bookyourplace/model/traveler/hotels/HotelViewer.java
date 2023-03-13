@@ -174,7 +174,7 @@ public class HotelViewer extends Fragment {
                         hotelName.setText(hotel.getName());
                         hotelPrice.setText(String.valueOf(hotel.getPrice()));
                         hotelInfo.setText(hotel.getDescription());
-                        numOfRatings.setText(String.valueOf(hotel.getRate()));
+                        numOfRatings.setText(String.valueOf(hotel.getStars()));
 
                         Glide.with(getActivity())
                                 .load(hotel.getCoverPhoto())
