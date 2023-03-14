@@ -193,6 +193,15 @@
         android:name="com.example.bookyourplace.model.hotel_manager.Hotel_Edit"
         android:label="fragment_hotel_manager_hotel_edit"
         tools:layout="@layout/fragment_hotel_manager_hotel_edit" >
+        <argument
+            android:name="Hotel"
+            app:argType="com.example.bookyourplace.model.hotel_manager.Hotel" />
+        <argument
+            android:name="Hotel Name"
+            app:argType="string" />
+        <argument
+            android:name="PreviousFragment"
+            app:argType="string"/>
         <action
             android:id="@+id/action_hotel_manager_hotel_edit_to_hotel_manager_home"
             app:destination="@id/hotel_manager_home" />

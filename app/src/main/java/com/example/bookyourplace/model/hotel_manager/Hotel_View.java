@@ -1,11 +1,14 @@
 package com.example.bookyourplace.model.hotel_manager;
 
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -16,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -125,8 +129,10 @@ public class Hotel_View extends Fragment {
     }
 
     private void loadDatatoElements(View root) {
-        if(!getArguments().isEmpty()) {
-            hotel = (Hotel) getArguments().getSerializable("Hotel");
+        Hotel_ViewArgs args = Hotel_ViewArgs.fromBundle(getArguments());
+        String HotelName = args.getHotel().getName();
+        if(!HotelName.isEmpty()) {
+            hotel = args.getHotel();
             if (hotel != null) {
                 tv_hotel_view_name.setText(hotel.getName());
 
@@ -137,7 +143,6 @@ public class Hotel_View extends Fragment {
                         .placeholder(R.drawable.admin_backgrounf_pic)
                         .fitCenter()
                         .into(iv_hotel_view_photo);
-
             } else {
                 Navigation.findNavController(root).navigate(R.id.action_profile_to_hotel_manager_home);
             }
@@ -149,21 +154,6 @@ public class Hotel_View extends Fragment {
 
     private void getCurrentBookings(View root) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        CollectionReference bookingsRef = db.collection("Booking");
-//        Query query = bookingsRef.whereEqualTo("hotelID", hotelId);
-//
-//        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot querySnapshot) {
-//                ArrayList<String> keys = new ArrayList<>();
-//                for (DocumentSnapshot documentSnapshot : querySnapshot) {
-//                    if (documentSnapshot.exists()) {
-//                        String bookingKey = documentSnapshot.getId();
-//                        keys.add(bookingKey);
-//                    }
-//                }
-//                populateRecyclerView(root, keys);
-//            }
 
         CollectionReference hotelsRef = db.collection("hotels");
         Query query = hotelsRef.whereEqualTo("name", hotelId).limit(1);
@@ -224,26 +214,40 @@ public class Hotel_View extends Fragment {
         });
 
         bt_hotel_view_edit.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("Hotel", hotel);
-            bundle.putString("Hotel Name", hotelId);
-            bundle.putString("PreviousFragment","Hotel_View");
-            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_hotel_view_to_hotel_manager_hotel_edit, bundle);
+            String hotelName = hotel.getName();
+            NavDirections action = Hotel_ViewDirections.actionHotelManagerHotelViewToHotelManagerHotelEdit(hotel,hotelName,"Hotel_View");
+            Navigation.findNavController(root).navigate(action);
         });
 
         bt_hotel_view_delete.setOnClickListener(v -> {
-            StorageReference imageDeleteCover = FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto());
-            imageDeleteCover.delete();
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.hotel_delete_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-            for(String url : hotel.getOtherPhotos()){
-                StorageReference imageDeleteOthers = FirebaseStorage.getInstance().getReferenceFromUrl(url);
-                imageDeleteOthers.delete();
-            }
+            dialog.setCancelable(false);
 
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("hotels").document(hotelId).delete();
+            dialog.create();
 
-            bt_hotel_view_back.performClick();
+            Button confirm = dialog.findViewById(R.id.bt_dialog_delete_Confirm);
+            Button deny = dialog.findViewById(R.id.bt_dialog_delete_Deny);
+            confirm.setOnClickListener(V->{
+                StorageReference imageDeleteCover = FirebaseStorage.getInstance().getReferenceFromUrl(hotel.getCoverPhoto());
+                imageDeleteCover.delete();
+
+                for(String url : hotel.getOtherPhotos()){
+                    StorageReference imageDeleteOthers = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+                    imageDeleteOthers.delete();
+                }
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("hotels").document(hotelId).delete();
+                bt_hotel_view_back.performClick();
+                dialog.dismiss();
+            });
+            deny.setOnClickListener(V -> dialog.dismiss());
+            dialog.show();
         });
     }
 }

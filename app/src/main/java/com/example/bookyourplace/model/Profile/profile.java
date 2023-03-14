@@ -104,14 +104,12 @@ public class profile extends Fragment {
         profileArgs args = profileArgs.fromBundle(getArguments());
         if (!getArguments().isEmpty()) {
             User user = args.getUser() ;
-            if (user != null) {
-                if (user instanceof Traveler) {
-                    typeUser = "Traveler";
-                }
-
-                if (user instanceof HotelManager) {
-                    typeUser = "Hotel Manager";
-                }
+            if (user instanceof Traveler) {
+                typeUser = "Traveler";
+            }
+            if (user instanceof HotelManager) {
+                typeUser = "Hotel Manager";
+            }
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseUser = firebaseAuth.getCurrentUser();
                 db = FirebaseFirestore.getInstance();
@@ -124,7 +122,6 @@ public class profile extends Fragment {
                             .fitCenter()
                             .into(iv_ProfileImage);
                 }
-            }
         }
     }
 

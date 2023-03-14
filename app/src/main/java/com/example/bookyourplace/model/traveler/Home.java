@@ -173,15 +173,29 @@ public class Home extends Fragment {
 
 
         bt_Logout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_login);
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.logout);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+            dialog.setCancelable(false);
+
+            dialog.create();
+
+            Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
+            Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
+            dialog.show();
+            confirm.setOnClickListener(V -> {
+                dialog.dismiss();
+                mAuth.signOut();
+                Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_login);
+                });
+            deny.setOnClickListener(V -> dialog.dismiss());
         });
 
 
         search_btn.setOnClickListener(v -> {
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("inputText", textinput_location.getText().toString());
-//                    Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_searchHotel, bundle);
             String inputText = textinput_location.getText().toString();
             NavDirections action = HomeDirections.actionTravelerHomeToSearchHotel(inputText);
             Navigation.findNavController(root).navigate(action);

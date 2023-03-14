@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
@@ -115,10 +116,6 @@ public class Hotel_Edit extends Fragment {
     private List<Uri> othersphotos;
     private TextView tv_popupMenu;
 
-    private LinearLayout ll_Hotel_GPS_Address;
-    private GoogleMap map;
-    private MapView mMapView;
-    private SearchView searchView;
     private LatLng coordinates;
 
     private ImageButton bt_hotel_edit_back;
@@ -134,14 +131,13 @@ public class Hotel_Edit extends Fragment {
 
             @Override
             public void handleOnBackPressed() {
-                String fragment = getArguments().getString("PreviousFragment");
+                Hotel_EditArgs args = Hotel_EditArgs.fromBundle(getArguments());
+                String fragment = args.getPreviousFragment();
 
                 switch (fragment){
                     case "Hotel_View":
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("Hotel", hotel);
-                        bundle.putString("Hotel Name",hotelID);
-                        Navigation.findNavController(getView()).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_hotel_view, bundle);
+                        NavDirections action = Hotel_EditDirections.actionHotelManagerHotelEditToHotelManagerHotelView(hotel,hotelID);
+                        Navigation.findNavController(getView()).navigate(action);
                         break;
 
                     case "Hotel_Manage":
@@ -172,7 +168,6 @@ public class Hotel_Edit extends Fragment {
 
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
-        //firebaseUser = firebaseAuth.getCurrentUser();
 
         et_Name = root.findViewById(R.id.et_Hotel_Name_edit);
 
@@ -186,7 +181,6 @@ public class Hotel_Edit extends Fragment {
         et_TotalRooms = root.findViewById(R.id.et_Hotel_Total_Rooms_edit);
         et_Price = root.findViewById(R.id.et_Hotel_Price_Rooms_edit);
 
-       // ll_Hotel_GPS_Address = root.findViewById(R.id.ll_Hotel_GPS_Address);
         ccp_country = root.findViewById(R.id.ccp_Hotel_Country_edit);
         et_City = root.findViewById(R.id.et_Hotel_City_edit);
         et_Address = root.findViewById(R.id.et_Hotel_Address_edit);
@@ -269,7 +263,7 @@ public class Hotel_Edit extends Fragment {
                             });
                         }
 
-                        hotel_features_listern();
+                        hotel_features_listener();
                     } else {
                         Navigation.findNavController(root).navigate(R.id.action_hotel_manager_hotel_edit_to_hotel_manager_home);
                     }
@@ -308,12 +302,12 @@ public class Hotel_Edit extends Fragment {
         });
 
 
-       hotel_features_listern();
+       hotel_features_listener();
 
-       hotel_photos_listern();
+       hotel_photos_listener();
     }
 
-    public void hotel_features_listern() {
+    public void hotel_features_listener() {
         if (hotelFeatures == null) {
             hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
             tv_Features_Selected.setText("Features");
@@ -383,83 +377,7 @@ public class Hotel_Edit extends Fragment {
         });
     }
 
-
-//    public void hotel_features_listern(){
-//        if(hotelFeatures == null){
-//            hotelFeatures = new HotelFeature(getResources().getStringArray(R.array.Features));
-//
-//            tv_Features_Selected.setText("Features");
-//        }
-//
-//        String[] featuresKeys = new String[hotelFeatures.getHotelFeature()];
-//        boolean[] featuresValues = new boolean[hotelFeatures.getHotelFeature()];
-//        ArrayList<Integer> featuresSelected = new ArrayList<>();
-//
-//        int index = 0;
-//        for (Map.Entry<String, Boolean> entry : hotelFeatures.getFeatures().entrySet()){
-//            featuresKeys[index] = entry.getKey();
-//            featuresValues[index] = entry.getValue();
-//            if(entry.getValue()){
-//                featuresSelected.add(index);
-//            }
-//            index++;
-//        }
-//
-//        String featurename = "";
-//        for (int i = 0; i < featuresSelected.size(); i++) {
-//            featurename = featurename + featuresKeys[featuresSelected.get(i)];
-//            if (i != featuresSelected.size() - 1) {
-//                featurename = featurename + ", ";
-//            }
-//        }
-//        tv_Features_Selected.setText(featurename);
-//
-//        bt_Features.setOnClickListener(view -> {
-//            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
-//            mBuilder.setTitle("Selected features of hotel");
-//            mBuilder.setMultiChoiceItems(featuresKeys, featuresValues, (dialogInterface, position, isChecked) -> {
-//                if(isChecked){
-//                    featuresSelected.add(position);
-//                    hotelFeatures.setFeatures_Value(featuresKeys[position],true);
-//                }else{
-//                    hotelFeatures.setFeatures_Value(featuresKeys[position],false);
-//                    featuresSelected.remove(position);
-//                }
-//            });
-//
-//            mBuilder.setPositiveButton("Ok", (dialogInterface, which) -> {
-//                for (int i = 0; i < featuresKeys.length; i++) {
-//                    hotelFeatures.setFeatures_Value(featuresKeys[i], featuresValues[i]);
-//                }
-//
-//                String item = "";
-//                for (int i = 0; i < featuresSelected.size(); i++) {
-//                    item = item + featuresKeys[featuresSelected.get(i)];
-//                    if (i != featuresSelected.size() - 1) {
-//                        item = item + ", ";
-//                    }
-//                }
-//                Log.e("Features", hotelFeatures.toString());
-//                tv_Features_Selected.setText(item);
-//            });
-//
-//            mBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> dialogInterface.dismiss());
-//
-//            mBuilder.setNeutralButton("Clear all", (dialogInterface, which) -> {
-//                for (int i = 0; i < featuresValues.length; i++) {
-//                    featuresValues[i] = false;
-//                    featuresSelected.clear();
-//                }
-//                tv_Features_Selected.setText("");
-//            });
-//
-//            AlertDialog mDialog = mBuilder.create();
-//            mDialog.show();
-//        });
-//    }
-
-
-    private void hotel_photos_listern() {
+    private void hotel_photos_listener() {
         ll_Hotel_Cover_Photo.setOnClickListener(v -> {
             openUploadDialog(PICK_COVER_IMAGE_REQUEST);
         });

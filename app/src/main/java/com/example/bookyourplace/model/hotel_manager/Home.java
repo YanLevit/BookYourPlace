@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -30,10 +31,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +40,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -63,7 +61,6 @@ public class Home  extends Fragment {
     LinearLayout profileMenu;
     Button bt_EditProfile, bt_Logout;
     TextView tv_NameMensage;
-    FloatingActionButton search_btn;
     TextView textinput_location;
     MaterialButton bt_register_hotel;
 
@@ -148,7 +145,6 @@ public class Home  extends Fragment {
 
         tv_NameMensage = root.findViewById(R.id.tv_NameMensage_User);
 
-        search_btn = root.findViewById(R.id.home_search_btn);
         textinput_location = root.findViewById(R.id.textinput_location);
 
         bt_register_hotel = root.findViewById(R.id.bt_register_hotel);
@@ -176,15 +172,31 @@ public class Home  extends Fragment {
 
 
         bt_EditProfile.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("User", user);
-            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_profile, bundle);
+            NavDirections action = com.example.bookyourplace.model.hotel_manager.HomeDirections.actionHotelManagerHomeToProfile(user);
+            Navigation.findNavController(root).navigate(action);
         });
 
 
         bt_Logout.setOnClickListener(v -> {
-            mAuth.signOut();
-            Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_login);
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.logout);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+            dialog.setCancelable(false);
+
+            dialog.create();
+
+            Button confirm = dialog.findViewById(R.id.bt_dialog_logout_Confirm);
+            Button deny = dialog.findViewById(R.id.bt_dialog_logout_Deny);
+            dialog.show();
+            confirm.setOnClickListener(V -> {
+                dialog.dismiss();
+                mAuth.signOut();
+                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_login);
+            });
+            deny.setOnClickListener(V -> dialog.dismiss());
         });
 
         bt_register_hotel.setOnClickListener(view -> {
@@ -277,52 +289,70 @@ public class Home  extends Fragment {
 
             @Override
             public void onEditClick(int position) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("Hotel", mHotelList.get(position));
-                bundle.putString("Hotel Name", mHotelList.get(position).getName());
-                bundle.putString("PreviousFragment","Hotel_Manage");
-                Navigation.findNavController(root).navigate(R.id.action_hotel_manager_home_to_hotel_manager_hotel_edit, bundle);
+                Hotel hotel = mHotelList.get(position);
+                String hotelName = hotel.getName();
+                NavDirections action = HomeDirections.actionHotelManagerHomeToHotelManagerHotelEdit(hotel, hotelName, "Hotel_Manage");
+                Navigation.findNavController(root).navigate(action);
             }
 
             @Override
             public void onDeleteClick(int position) {
-                Hotel hotelToDelete = mHotelList.get(position);
-                String hotelName = hotelToDelete.getName();
 
-                StorageReference imageDeleteCover = FirebaseStorage.getInstance().getReferenceFromUrl(hotelToDelete.getCoverPhoto());
-                imageDeleteCover.delete();
+                Dialog dialog = new Dialog(getContext());
+                dialog.setContentView(R.layout.hotel_delete_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
 
-                for (String url : hotelToDelete.getOtherPhotos()) {
-                    StorageReference imageDeleteOthers = FirebaseStorage.getInstance().getReferenceFromUrl(url);
-                    imageDeleteOthers.delete();
-                }
+                dialog.setCancelable(false);
 
-                db.collection("hotels")
-                        .whereEqualTo("name", hotelName)
-                        .get()
-                        .addOnSuccessListener(queryDocumentSnapshots -> {
-                            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                                document.getReference().delete().addOnSuccessListener(aVoid -> {
-                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                    mHotelList.remove(position);
-                                    mAdapter.notifyItemRemoved(position);
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error deleting document", e);
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error getting documents", e);
-                            }
-                        });
+                dialog.create();
+
+                Button confirm = dialog.findViewById(R.id.bt_dialog_delete_Confirm);
+                Button deny = dialog.findViewById(R.id.bt_dialog_delete_Deny);
+
+                confirm.setOnClickListener(v -> {
+                    Hotel hotelToDelete = mHotelList.get(position);
+                    String hotelName = hotelToDelete.getName();
+
+                    StorageReference imageDeleteCover = FirebaseStorage.getInstance().getReferenceFromUrl(hotelToDelete.getCoverPhoto());
+                    imageDeleteCover.delete();
+
+                    for (String url : hotelToDelete.getOtherPhotos()) {
+                        StorageReference imageDeleteOthers = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+                        imageDeleteOthers.delete();
+                    }
+
+                    db.collection("hotels")
+                            .whereEqualTo("name", hotelName)
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                    document.getReference().delete().addOnSuccessListener(aVoid -> {
+                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                        Toast.makeText(getContext(), "Hotel Deleted Successfully", Toast.LENGTH_LONG).show();
+                                        mHotelList.remove(position);
+                                        mAdapter.notifyItemRemoved(position);
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error deleting document", e);
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error getting documents", e);
+                                }
+                            });
+                    dialog.dismiss();
+                });
+                deny.setOnClickListener(v -> dialog.dismiss());
+                dialog.show();
             }
         });
     }
-
 }
 
 
