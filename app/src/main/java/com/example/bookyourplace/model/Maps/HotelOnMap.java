@@ -58,8 +58,7 @@ import java.util.Map;
 
 public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
-    FirebaseFirestore firestore;
-
+    private FirebaseFirestore firestore;
     private static final int REQUEST_FINE_LOCATION = 40;
 
     private FloatingActionButton fab_parent_map, fab_satellite, fab_terrain, fab_normal;
@@ -70,18 +69,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
 
     private SearchView searchView;
-
-    private FloatingActionButton filterBtn;
-    private EditText minPriceBtn, maxPriceBtn;
-    private boolean fabsOn = false;
-
-    private ExtendedFloatingActionButton partyMoodBtn;
-    private ExtendedFloatingActionButton chillMoodBtn;
-    private ExtendedFloatingActionButton adventureMoodBtn;
-    private ExtendedFloatingActionButton sportsMoodBtn;
-    private MaterialCardView filter_popup_cv;
-    private Float minPrice =null, maxPrice=null;
-    private boolean party=false,chill=false,adventure=false, sports=false;
 
     private LinkedHashMap<Hotel,String> hotelResults = new LinkedHashMap<>();
 
@@ -128,7 +115,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
         searchViewInitialize(root);
 
-        filtersInitialize(root);
     }
 
     private void floatingActionButtonsMapStyleInitialize(View root) {
@@ -157,24 +143,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
         isAllMapsFabsVisible = false;
     }
 
-    private void filtersInitialize(View root) {
-        filter_popup_cv= root.findViewById(R.id.filter_popup_cv_onMap);
-        filterBtn= root.findViewById(R.id.filter_btn_onMap);
-        minPriceBtn = root.findViewById(R.id.min_price_onMap);
-        maxPriceBtn = root.findViewById(R.id.max_price_onMap);
-        partyMoodBtn = root.findViewById(R.id.searchFilter_party_onMap);
-        chillMoodBtn = root.findViewById(R.id.searchFilter_Chill_onMap);
-        adventureMoodBtn = root.findViewById(R.id.searchFilter_Adventure_onMap);
-        sportsMoodBtn = root.findViewById(R.id.searchFilter_sports_onMap);
-
-        minPriceBtn.setVisibility(View.GONE);
-        maxPriceBtn.setVisibility(View.GONE);
-        partyMoodBtn.setVisibility(View.GONE);
-        chillMoodBtn.setVisibility(View.GONE);
-        adventureMoodBtn.setVisibility(View.GONE);
-        sportsMoodBtn.setVisibility(View.GONE);
-        filter_popup_cv.setVisibility(View.GONE);
-    }
 
     private void searchViewInitialize(View root) {
         searchView = root.findViewById(R.id.sv_location_OnMap);
@@ -192,8 +160,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
     private void clickListener(View root) {
         floatingActionButtonsMapStyleClickListener();
-
-        filterListener();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -227,53 +193,9 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
         });
     }
 
-    private void filterListener() {
-        filterBtn.setOnClickListener(v -> {
-            if(isAllMapsFabsVisible){
-                fab_parent_map.performClick();
-            }
-
-            if(!fabsOn)
-            {
-                filter_popup_cv.setVisibility(View.VISIBLE);
-                filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_in));
-                minPriceBtn.setVisibility(View.VISIBLE);
-                maxPriceBtn.setVisibility(View.VISIBLE);
-                partyMoodBtn.setVisibility(View.VISIBLE);
-                chillMoodBtn.setVisibility(View.VISIBLE);
-                adventureMoodBtn.setVisibility(View.VISIBLE);
-                sportsMoodBtn.setVisibility(View.VISIBLE);
-                fabsOn=true;
-            }
-            else
-            {
-                filter_popup_cv.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                minPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                minPriceBtn.setVisibility(View.GONE);
-                maxPriceBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                maxPriceBtn.setVisibility(View.GONE);
-                partyMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                partyMoodBtn.setVisibility(View.GONE);
-                chillMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                chillMoodBtn.setVisibility(View.GONE);
-                adventureMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                adventureMoodBtn.setVisibility(View.GONE);
-                sportsMoodBtn.startAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.slide_out));
-                sportsMoodBtn.setVisibility(View.GONE);
-                filter_popup_cv.setVisibility(View.GONE);
-                fabsOn=false;
-            }
-        });
-
-
-
-    }
 
     private void floatingActionButtonsMapStyleClickListener(){
         fab_parent_map.setOnClickListener(view -> {
-            if(fabsOn){
-                filterBtn.performClick();
-            }
 
             if (!isAllMapsFabsVisible) {
                 fab_satellite.show();
@@ -286,7 +208,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
                 isAllMapsFabsVisible = true;
 
-                filterBtn.setVisibility(View.GONE);
             } else {
 
                 fab_satellite.hide();
@@ -298,8 +219,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
                 tv_normal.setVisibility(View.GONE);
 
                 isAllMapsFabsVisible = false;
-
-                filterBtn.setVisibility(View.VISIBLE);
             }
         });
 
@@ -382,9 +301,6 @@ public class HotelOnMap extends Fragment implements OnMapReadyCallback {
 
         mMap.setOnInfoWindowClickListener(marker -> {
             String[] info = marker.getSnippet().split("«");
-//            Bundle bundle = new Bundle();
-//            bundle.putString("clickDetails", info[4]);
-//            bundle.putString("PreviousFragment", "SearchOnMap");
             NavDirections action = HotelOnMapDirections.actionHotelOnMapToHotelViewer("","","clickDetails",info[4]);
             Navigation.findNavController(getView()).navigate(action);
         });
