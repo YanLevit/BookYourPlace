@@ -61,7 +61,6 @@ public class profile extends Fragment {
     ViewPager viewPager;
     PageAdapter pageAdapter;
     Uri profileImageUri;
-//    StorageTask mUploadTask;
     User user;
     String typeUser;
     ImageView iv_ProfileImage;
