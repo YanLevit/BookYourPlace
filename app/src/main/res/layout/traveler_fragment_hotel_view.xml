@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F8F8FF">
 
 
     <ImageButton
@@ -95,7 +96,8 @@
                     android:textStyle="bold"
                     app:drawableEndCompat="@drawable/ic_euro"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:backgroundTint="#4682B4" />
 
                 <!-- the text its just a placeholder -->
 
@@ -276,7 +278,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/linearLayout11" />
+                        app:layout_constraintTop_toBottomOf="@id/linearLayout11"
+                        app:backgroundTint="#4682B4"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

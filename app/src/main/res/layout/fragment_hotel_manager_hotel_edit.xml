@@ -27,6 +27,7 @@
                 android:id="@+id/bt_hotel_edit_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:backgroundTint="#4682B4"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
                 android:padding="10dp"
@@ -384,6 +385,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="@string/select_features_of_hotel"
+                    app:backgroundTint="#4682B4"
                     app:icon="@drawable/ic_arrow_forward"
                     app:iconGravity="textEnd" />
 
@@ -457,7 +459,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="1318dp" />
+                app:layout_constraintTop_toTopOf="@+id/bt_EditHotel" />
 
             <LinearLayout
                 android:id="@+id/ll_Hotel_Moods"
@@ -476,6 +478,7 @@
                 android:id="@+id/bt_EditHotel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:backgroundTint="#4682B4"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:text="@string/apply_changes"

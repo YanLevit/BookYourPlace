@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="32dp"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F8F8FF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
@@ -52,7 +53,8 @@
             android:layout_height="43dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            app:backgroundTint="#4682B4"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

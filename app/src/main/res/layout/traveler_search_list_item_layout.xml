@@ -5,7 +5,8 @@
     android:layout_height="180dp"
     android:layout_marginBottom="16sp"
     app:cardCornerRadius="25dp"
-    app:contentPadding="0dp">
+    app:contentPadding="0dp"
+    android:background="#F8F8FF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -81,7 +82,8 @@
                 android:drawablePadding="4dp"
                 android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:backgroundTint="#4682B4"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

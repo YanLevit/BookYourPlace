@@ -31,6 +31,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_ProfileImage"
+            app:backgroundTint="#4682B4"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
@@ -42,6 +43,7 @@
             app:layout_constraintHorizontal_bias="0.482"
             app:layout_constraintStart_toEndOf="@+id/iv_ProfileImage"
             app:layout_constraintTop_toTopOf="parent"
+            app:backgroundTint="#4682B4"
             app:srcCompat="@android:drawable/ic_menu_save" />
 
         <ImageButton
@@ -50,6 +52,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            app:backgroundTint="#4682B4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/actionModeCloseDrawable" />
@@ -71,7 +74,7 @@
             android:id="@+id/tab_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/background_color"
+            android:background="#4682B4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

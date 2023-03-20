@@ -29,6 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
                 android:layout_marginTop="25dp"
+                app:backgroundTint="#4682B4"
                 android:padding="10dp"
                 android:src="@drawable/ic_arrow_back"
                 app:layout_constraintStart_toStartOf="parent"
@@ -419,6 +420,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="@string/select_features_of_hotel"
+                    app:backgroundTint="#4682B4"
                     app:icon="@drawable/ic_arrow_forward"
                     app:iconGravity="textEnd" />
 
@@ -527,6 +529,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"
+                app:backgroundTint="#4682B4"
                 android:text="@string/register_the_hotel"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="textEnd"

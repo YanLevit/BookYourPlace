@@ -44,6 +44,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
+                app:backgroundTint="#4682B4"
                 android:id="@+id/bt_hotel_view_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,6 +61,7 @@
                 android:id="@+id/bt_hotel_view_edit"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
+                app:backgroundTint="#4682B4"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="68dp"
                 android:background="@drawable/rounded_rectangle_for_buttons"
@@ -77,6 +79,7 @@
                 android:background="@drawable/rounded_rectangle_for_buttons"
                 android:padding="15dp"
                 android:src="@drawable/ic_delete_data"
+                app:backgroundTint="#4682B4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.483"
                 app:layout_constraintStart_toEndOf="@+id/bt_hotel_view_edit"

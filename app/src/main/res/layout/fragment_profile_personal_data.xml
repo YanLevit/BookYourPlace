@@ -32,6 +32,7 @@
                         android:text="Save"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:backgroundTint="#4682B4"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tilZipCode" />
 
@@ -49,6 +50,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_ZipCode"
                             android:layout_width="match_parent"
+                            android:background="#F8F8FF"
                             android:layout_height="wrap_content"
                             android:hint="@string/zip_code" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -68,6 +70,7 @@
                             android:id="@+id/et_Address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="#F8F8FF"
                             android:hint="@string/address" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,6 +89,7 @@
                             android:id="@+id/et_City"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="#F8F8FF"
                             android:hint="@string/city" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -104,6 +108,7 @@
                             android:id="@+id/et_Email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="#F8F8FF"
                             android:hint="@string/email" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,6 +136,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/name"
+                                android:background="#F8F8FF"
                                 android:inputType="textPersonName" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -146,6 +152,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/surname"
+                                android:background="#F8F8FF"
                                 android:inputType="textPersonName" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,6 +175,7 @@
                             android:layout_height="wrap_content"
                             android:ems="10"
                             android:hint="@string/age"
+                            android:background="#F8F8FF"
                             android:inputType="textPersonName" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -193,6 +201,7 @@
                                 android:id="@+id/et_Phone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="#F8F8FF"
                                 android:hint="@string/phone" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>

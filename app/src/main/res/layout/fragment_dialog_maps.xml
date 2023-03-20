@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/backgroud_dialog">
@@ -49,18 +50,19 @@
 
         </SearchView>
 
+        <ImageButton
+            android:id="@+id/bt_close_map_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_background_active"
+            android:contentDescription="close"
+
+            android:padding="15dp"
+            app:srcCompat="@drawable/ic_close"
+            tools:layout_editor_absoluteX="343dp"
+            tools:layout_editor_absoluteY="-17dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <ImageButton
-        android:id="@+id/bt_close_map_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/circle_background_active"
-        android:contentDescription="close"
-        android:padding="15dp"
-        app:srcCompat="@drawable/ic_close" />
 
 </RelativeLayout>

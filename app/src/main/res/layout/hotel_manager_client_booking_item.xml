@@ -40,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="@string/client_name" />
+            android:text="@string/client_name"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +64,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_search_1"
             android:padding="16dp"
-            android:text="Start" />
+            android:text="Start"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/manager_out_start"
@@ -81,7 +83,8 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/shape_search_1"
             android:padding="16dp"
-            android:text="End" />
+            android:text="End"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/manager_out_end"
@@ -89,7 +92,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAppearance="@style/custom_caption" />
+            android:textAppearance="@style/custom_caption"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -110,7 +114,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_search_1"
             android:padding="16dp"
-            android:text="Adults" />
+            android:text="Adults"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/manager_out_adults"
@@ -118,7 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAppearance="@style/custom_caption" />
+            android:textAppearance="@style/custom_caption"
+            android:textStyle="bold" />
 
         <TextView
             style="?attr/textAppearanceCaption"
@@ -127,7 +133,8 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/shape_search_1"
             android:padding="16dp"
-            android:text="Kids" />
+            android:text="Kids"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/manager_out_kids"
@@ -135,7 +142,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView"
-            android:textAppearance="@style/custom_caption" />
+            android:textAppearance="@style/custom_caption"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -154,7 +162,8 @@
             style="?attr/textAppearanceSubtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/revenue_generated" />
+            android:text="@string/revenue_generated"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/manager_out_total"
@@ -163,6 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:drawableEnd="@drawable/ic_euro"
+            android:textStyle="bold"
             tools:text="00€" />
     </LinearLayout>
 

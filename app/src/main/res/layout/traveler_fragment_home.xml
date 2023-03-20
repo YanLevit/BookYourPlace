@@ -5,7 +5,8 @@
     android:id="@+id/cl_Home_User"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="model.traveler.Home">
+    tools:context="model.traveler.Home"
+    android:background="#F8F8FF">
 
     <ScrollView
         android:layout_width="0dp"
@@ -188,8 +189,10 @@
                             android:id="@+id/textinput_location"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:backgroundTint="#60FFFFFF"
                             android:imeOptions="actionDone"
-                            android:inputType="textPersonName|text|textCapSentences" />
+                            android:inputType="textPersonName|text|textCapSentences"
+                            android:textStyle="bold" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -199,6 +202,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="40dp"
                         app:backgroundTint="#4682B4"
+                        android:src="@drawable/ic_arrow_forward"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
