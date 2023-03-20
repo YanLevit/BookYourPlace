@@ -207,51 +207,40 @@ public class profile extends Fragment {
                         user.setImage(uri.toString());
                         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        if(db.collection("Traveler").document(userId).getId().equals(userId)){
-                            db.collection("Traveler").document(userId).set(user)
-                                    .addOnCompleteListener(task -> {
+                        db.collection("Traveler").document(userId).set(user)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            db.collection("Traveler").document(userId).update("image",uri.toString());
-                                            Glide.with(getContext())
-                                                    .load(user.getImage())
-                                                    .error(R.drawable.profile_pic_example)
-                                                    .fitCenter()
-                                                    .into(iv_ProfileImage);
-                                            progressDialog.dismiss();
-                                            bt_ProfileImageSave.setVisibility(View.GONE);
-                                        }else {
-                                            Toast.makeText(getContext(),"Error uploading data" , Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                            db.collection("Hotel Manager").document(userId).set(user)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                // Load the user's new profile image
+                                                                Glide.with(getContext())
+                                                                        .load(user.getImage())
+                                                                        .error(R.drawable.profile_pic_example)
+                                                                        .fitCenter()
+                                                                        .into(iv_ProfileImage);
 
-                        }
-                        else if (db.collection("Hotel Manger").document(userId).getId().equals(userId)) {
-                            db.collection("Hotel Manager").document(userId).set(user)
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            db.collection("Hotel Manager").document(userId).update("image",uri.toString());
-                                            //Load the user's new profile image
-                                            Glide.with(getContext())
-                                                    .load(user.getImage())
-                                                    .error(R.drawable.profile_pic_example)
-                                                    .fitCenter()
-                                                    .into(iv_ProfileImage);
-
-                                            progressDialog.dismiss();
-                                            bt_ProfileImageSave.setVisibility(View.GONE);
+                                                                progressDialog.dismiss();
+                                                                bt_ProfileImageSave.setVisibility(View.GONE);
+                                                            } else {
+                                                                Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
+                                                                progressDialog.dismiss();
+                                                            }
+                                                        }
+                                                    });
                                         } else {
-                                            Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
-                                            progressDialog.dismiss();
+                                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
                                         }
-                                    });
-                        }
-                        else {
-                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
-                        }
+                                    }
+                                });
                     });
                 });
-    }
 
+    }
 
     private void openFileChooser() {
         // Create intent to open the phone's gallery
