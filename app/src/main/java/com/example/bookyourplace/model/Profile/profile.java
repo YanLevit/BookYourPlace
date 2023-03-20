@@ -97,14 +97,15 @@ public class profile extends Fragment {
     }
 
     private void loadDatatoElements() {
-        profileArgs args = profileArgs.fromBundle(getArguments());
         if (!getArguments().isEmpty()) {
-            User user = args.getUser() ;
+            user = (User) getArguments().getSerializable("User");
             if (user instanceof Traveler) {
                 typeUser = "Traveler";
+                user = (Traveler) getArguments().getSerializable("User");
             }
             if (user instanceof HotelManager) {
                 typeUser = "Hotel Manager";
+                user = (HotelManager) getArguments().getSerializable("User");
             }
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseUser = firebaseAuth.getCurrentUser();
