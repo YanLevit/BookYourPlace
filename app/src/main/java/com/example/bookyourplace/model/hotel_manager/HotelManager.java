@@ -30,27 +30,6 @@ public class HotelManager extends User implements Serializable {
         this.hotels = hotels;
     }
 
-    public void addHotel(String hotel) {
-        if(hotels.isEmpty()){
-            hotels = new ArrayList<>();
-        }
-        this.hotels.add(hotel);
-    }
-
-    public void removeHotelbyIndex(int index) {
-        this.hotels.remove(index);
-    }
-
-    public void removeHotelbyObject(String hotel) {
-        int index = 0;
-        for(String id: hotels){
-            if(id == hotel){
-                hotels.remove(index);
-                break;
-            }
-            index++;
-        }
-    }
     //////////////// SETS END ////////////////
 
 }

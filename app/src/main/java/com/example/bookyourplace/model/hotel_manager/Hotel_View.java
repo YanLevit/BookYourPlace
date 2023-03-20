@@ -87,7 +87,6 @@ public class Hotel_View extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_hotel_manager_hotel_view, container, false);
 
-//        hotelId = getArguments().getString("Hotel Name");
         Hotel_ViewArgs args = Hotel_ViewArgs.fromBundle(getArguments());
         hotelId = args.getHotel().getName();
 
@@ -158,8 +157,6 @@ public class Hotel_View extends Fragment {
         CollectionReference hotelsRef = db.collection("hotels");
         Query query = hotelsRef.whereEqualTo("name", hotelId).limit(1);
 
-
-
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot querySnapshot) {
@@ -170,7 +167,6 @@ public class Hotel_View extends Fragment {
                     populateRecyclerView(root, keys);
                 }
             }
-
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {

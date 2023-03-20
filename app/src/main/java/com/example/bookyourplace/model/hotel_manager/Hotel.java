@@ -20,7 +20,6 @@ public class Hotel implements Serializable {
     private float stars;
     //////////////////////////////
     private int total_rooms;
-    private int rooms_occupied;
     private float price;
     //////////////////////////////
     private String description;
@@ -47,7 +46,6 @@ public class Hotel implements Serializable {
         stars = 0;
         //////////////////////////////
         total_rooms = 0;
-        rooms_occupied = 0;
         price = 0;
         //////////////////////////////
         description = "";
@@ -70,13 +68,11 @@ public class Hotel implements Serializable {
         this.rate = 0;
         this.stars = stars;
         this.total_rooms = total_rooms;
-        this.rooms_occupied = 0;
         this.feature = feature;
         this.coverPhoto = "";
         this.otherPhotos = new ArrayList<>();
         this.bookings = new ArrayList<>();
     }
-
 
     //////////////// GETS BEGIN ////////////////
     public String getManager() {
@@ -105,10 +101,6 @@ public class Hotel implements Serializable {
 
     public int getTotal_Rooms() {
         return total_rooms;
-    }
-
-    public int getRooms_Occupied() {
-        return rooms_occupied;
     }
 
     public float getPrice() {
@@ -153,20 +145,12 @@ public class Hotel implements Serializable {
         this.address = address;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
     public void setStars(float stars) {
         this.stars = stars;
     }
 
     public void setTotal_Rooms(int total_rooms) {
         this.total_rooms = total_rooms;
-    }
-
-    public void setRooms_Occupied(int rooms_occupied) {
-        this.rooms_occupied = rooms_occupied;
     }
 
     public void setPrice(float price) {
@@ -185,23 +169,11 @@ public class Hotel implements Serializable {
         this.coverPhoto = coverPhoto;
     }
 
-    public void setOtherPhotos(List<String> otherPhotos) {
-        this.otherPhotos = otherPhotos;
-    }
-
-    public void setBookings(List<String> bookings) {
-        this.bookings = bookings;
-    }
-
     public void addBooking(String booking) {
         if (bookings == null) {
             bookings = new ArrayList<>();
         }
         this.bookings.add(booking);
-    }
-
-    public void removeBookingbyIndex(int index) {
-        this.bookings.remove(index);
     }
 //////////////// SETS END ////////////////
 }

@@ -61,14 +61,11 @@ public class profile extends Fragment {
     ViewPager viewPager;
     PageAdapter pageAdapter;
     Uri profileImageUri;
-    StorageTask mUploadTask;
+//    StorageTask mUploadTask;
     User user;
     String typeUser;
     ImageView iv_ProfileImage;
     ImageButton bt_ProfileImageEdit , bt_ProfileImageSave,  bt_Backhome_Profile;
-
-
-
 
 
 
@@ -256,8 +253,6 @@ public class profile extends Fragment {
     }
 
 
-
-
     private void openFileChooser() {
         // Create intent to open the phone's gallery
         Intent intentGallery = new Intent();
@@ -273,7 +268,6 @@ public class profile extends Fragment {
 
         startActivityForResult(chooserIntent, 1);
     }
-
 
 
     @Override
@@ -293,25 +287,6 @@ public class profile extends Fragment {
             bt_ProfileImageSave.setVisibility(View.VISIBLE);
         }
     }
-
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == 1 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//            profileImageUri = data.getData();
-//
-//            Glide.with(this)
-//                    .load(profileImageUri)
-//                    .error(R.drawable.profile_pic_example)
-//                    .fitCenter()
-//                    .into(iv_ProfileImage);
-//
-//            pb_ProfileImage.setVisibility(View.VISIBLE);
-//            bt_ProfileImageSave.setVisibility(View.VISIBLE);
-//        }
-//    }
 
 
     private String getFileExtension(Uri uri) {

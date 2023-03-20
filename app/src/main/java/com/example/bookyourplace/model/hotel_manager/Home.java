@@ -118,8 +118,6 @@ public class Home  extends Fragment {
 
         initializeElements(root);
 
-        //getLocation();
-
         clickListener(root);
 
        getListHotel(root);

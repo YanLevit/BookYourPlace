@@ -79,9 +79,7 @@ import java.util.Map;
 public class Hotel_Edit extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    //private FirebaseUser firebaseUser;
     private DatabaseReference databaseReference;
-//    private StorageReference storageReference;
 
     private String hotelID;
     private Hotel hotel;
