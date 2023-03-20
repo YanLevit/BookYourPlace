@@ -189,58 +189,71 @@ public class profile extends Fragment {
                 StorageReference imageDeleteRef = storage.getReferenceFromUrl(user.getImage());
                 imageDeleteRef.delete();
             }
-        }
 
-        // Code for showing progressDialog while uploading
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
+            // Code for showing progressDialog while uploading
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
 
-        // Defining the child of storageReference
-        String imageId = generateId() + "." + getFileExtension(profileImageUri);
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        storage.getReference().child(imageId).putFile(profileImageUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    storage.getReference().child(imageId).getDownloadUrl().addOnSuccessListener(uri -> {
-                        // Success, Image uploaded
-                        Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
-                        user.setImage(uri.toString());
-                        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        db.collection("Traveler").document(userId).set(user)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            db.collection("Hotel Manager").document(userId).set(user)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                // Load the user's new profile image
-                                                                Glide.with(getContext())
-                                                                        .load(user.getImage())
-                                                                        .error(R.drawable.profile_pic_example)
-                                                                        .fitCenter()
-                                                                        .into(iv_ProfileImage);
+            // Defining the child of storageReference
+            String imageId = generateId() + "." + getFileExtension(profileImageUri);
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            storage.getReference().child(imageId).putFile(profileImageUri)
+                    .addOnSuccessListener(taskSnapshot -> {
+                        storage.getReference().child(imageId).getDownloadUrl().addOnSuccessListener(uri -> {
+                            // Success, Image uploaded
+                            Toast.makeText(getContext(), "Upload successful", Toast.LENGTH_LONG).show();
+                            user.setImage(uri.toString());
+                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                                                progressDialog.dismiss();
-                                                                bt_ProfileImageSave.setVisibility(View.GONE);
-                                                            } else {
-                                                                Toast.makeText(getContext(), "Error uploading data", Toast.LENGTH_SHORT).show();
-                                                                progressDialog.dismiss();
-                                                            }
-                                                        }
-                                                    });
-                                        } else {
-                                            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                            if (typeUser.equals("Traveler")) {
+                                db.collection("Traveler").document(userId).set(user)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Load the user's new profile image
+                                                    Glide.with(getContext())
+                                                            .load(user.getImage())
+                                                            .placeholder(R.drawable.profile_pic_example)
+                                                            .fitCenter()
+                                                            .into(iv_ProfileImage);
+                                                }
+                                                progressDialog.dismiss();
+                                            }
+                                        });
+                            } else if (typeUser.equals("Hotel Manager")) {
+                                db.collection("Hotel Manager").document(userId).set(user)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    // Load the user's new profile image
+                                                    Glide.with(getContext())
+                                                            .load(user.getImage())
+                                                            .placeholder(R.drawable.profile_pic_example)
+                                                            .fitCenter()
+                                                            .into(iv_ProfileImage);
+                                                }
+                                                progressDialog.dismiss();
+                                            }
+                                        });
+                            }
+                        });
+                    })
+                    .addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Failed " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    })
+                    .addOnProgressListener(snapshot -> {
+                        // Progress Listener for loading
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        progressDialog.setMessage("Uploaded " + (int) progressPercent + "%");
                     });
-                });
-
+        }
     }
+
 
     private void openFileChooser() {
         // Create intent to open the phone's gallery

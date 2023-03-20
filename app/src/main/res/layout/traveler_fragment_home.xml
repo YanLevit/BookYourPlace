@@ -23,10 +23,23 @@
             android:focusableInTouchMode="true">
 
             <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home_cover"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
                 android:id="@+id/imageView9"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:background="@drawable/home_cover_mask"
                 app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintEnd_toEndOf="@+id/imageView10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,12 +82,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="My bookings"
+                        app:icon="@drawable/ic_mybookings"
                         android:textAllCaps="false"
                         app:iconPadding="8dp"
                         app:iconSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:backgroundTint="#4682B4"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -96,7 +111,8 @@
                     android:text="Edit Profile"
                     android:textAllCaps="false"
                     app:iconPadding="8dp"
-                    app:iconSize="16dp" />
+                    app:iconSize="16dp"
+                    app:backgroundTint="#4682B4"/>
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/bt_Logout_User"
@@ -106,7 +122,8 @@
                     android:text="Logout"
                     android:textAllCaps="false"
                     app:iconPadding="8dp"
-                    app:iconSize="16dp" />
+                    app:iconSize="16dp"
+                    app:backgroundTint="#4682B4"/>
 
             </LinearLayout>
 
@@ -126,13 +143,17 @@
                     style="?attr/textAppearanceSubtitle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hi, Martin" />
+                    android:text="Hi, Martin"
+                    android:textColor="@android:color/white"
+                    />
 
                 <TextView
                     style="?attr/textAppearanceHeadline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Plan your next trip!" />
+                    android:text="Plan your next trip!"
+                    android:textColor="@android:color/white"
+                    />
 
             </LinearLayout>
 
@@ -142,12 +163,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginEnd="25dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_profile_menu_User">
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout12">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -178,6 +198,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginTop="40dp"
+                        app:backgroundTint="#4682B4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -201,7 +222,8 @@
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout13"
                 app:layout_constraintHorizontal_bias="0.984"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
+                app:backgroundTint="#4682B4"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
