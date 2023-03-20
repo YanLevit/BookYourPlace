@@ -15,12 +15,6 @@ import java.util.List;
             super();
         }
 
-//        public Traveler(String name, String surname, String phone, String email, boolean isGoogle) {
-//            super(name, surname, phone, email, isGoogle);
-//            bookings = new ArrayList<>();
-//            searchRadius = 0f;
-//        }
-
         public Traveler(String name, String surname, String email, String phone, String password) {
             super(name, surname, email, phone, password);
             bookings = new ArrayList<>();

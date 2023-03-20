@@ -71,7 +71,7 @@ public class Home extends Fragment {
     TextView textinput_location;
     MaterialButton bt_search_onMap;
     ExtendedFloatingActionButton bookings_btn;
-    FloatingActionButton favsBtn;
+
 
 
     @Override
@@ -118,8 +118,6 @@ public class Home extends Fragment {
 
         initializeElements(root);
 
-        //getLocation();
-
         clickListener(root);
 
         loadDatatoElements();
@@ -146,8 +144,6 @@ public class Home extends Fragment {
         textinput_location= root.findViewById(R.id.textinput_location);
 
         bookings_btn = root.findViewById(R.id.my_bookings_btn);
-
-        favsBtn=root.findViewById(R.id.my_favs_btn2);
 
         bt_search_onMap = root.findViewById(R.id.bt_search_onMap);
     }
@@ -204,12 +200,6 @@ public class Home extends Fragment {
         bt_search_onMap.setOnClickListener(v -> {
            Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_hotelOnMap);
         });
-
-
-        favsBtn.setOnClickListener(v -> {
-           // Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_favorites);
-        });
-
 
         bookings_btn.setOnClickListener(v -> {
             Navigation.findNavController(root).navigate(R.id.action_traveler_home_to_myBookings);
