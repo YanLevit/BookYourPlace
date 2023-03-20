@@ -5,8 +5,9 @@
     android:id="@+id/fragment_container_Login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="#F8F8FF"
     android:tag="Login">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,22 +15,12 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/login_section"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:padding="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/profilePic">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_Register"
-                android:layout_width="289dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/register_with_email"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_Login"/>
 
             <ImageView
                 android:id="@+id/profilePic"
@@ -42,33 +33,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/logoapp" />
 
-            <TextView
-                android:id="@+id/tv_Forgot_Password"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/forgot_password"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bt_Login"
-                android:layout_width="124dp"
-                android:layout_height="53dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/login"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cb_Remember" />
+                app:layout_constraintTop_toBottomOf="@+id/profilePic">
 
-            <CheckBox
-                android:id="@+id/cb_Remember"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remember"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail_Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F8F8FF"
+                    android:ems="10"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
@@ -84,28 +67,60 @@
                     android:id="@+id/etPassword_Login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/password"
-                    android:inputType="textPassword" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profilePic">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmail_Login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:background="#F8F8FF"
                     android:ems="10"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress" />
-
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_Login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="@string/login"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconGravity="textEnd"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cb_Remember"
+                app:backgroundTint="#4682B4"/>
+
+            <TextView
+                android:id="@+id/tv_Forgot_Password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/forgot_password"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
+            <CheckBox
+                android:id="@+id/cb_Remember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remember"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_Register"
+                android:layout_width="294dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="68dp"
+                android:text="@string/register_with_email"
+                app:icon="@drawable/ic_arrow_forward"
+                app:iconGravity="textEnd"
+                app:iconTint="@null"
+                app:backgroundTint="#4682B4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bt_Login" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
