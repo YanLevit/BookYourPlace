@@ -69,8 +69,8 @@ public class ViewBookingsAdpater extends RecyclerView.Adapter<ViewBookingsAdpate
 
         getUserDetails(booking.getUserID(), holder);
 
-        holder.adults.setText(Float.toString(booking.getnAdults()));
-        holder.kids.setText(Float.toString(booking.getnChildren()));
+        holder.adults.setText(Integer.toString(booking.getnAdults()));
+        holder.kids.setText(Integer.toString(booking.getnChildren()));
         holder.total.setText(Float.toString(booking.getPrice()));
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");//formating according to my need
