@@ -1,6 +1,6 @@
 package com.example.bookyourplace.model;
 
-import com.example.bookyourplace.model.Address;
+
 
 import java.io.Serializable;
 

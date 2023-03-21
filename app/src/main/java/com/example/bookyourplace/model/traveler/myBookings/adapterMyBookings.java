@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -12,13 +11,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.hotel_manager.Hotel;
-import com.example.bookyourplace.model.hotel_manager.HotelListAdapter;
 import com.example.bookyourplace.model.traveler.Booking;
 import com.squareup.picasso.Picasso;
 

@@ -17,7 +17,6 @@ import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -35,7 +34,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,6 +67,11 @@ public class Hotel_View extends Fragment {
     private RecyclerView lastBookings_rv;
 
     private static String TAG = "";
+
+    private ArrayList<Booking> bookings = new ArrayList<>();
+
+    private  ViewBookingsAdpater adapter;
+
 
 
     @Override
@@ -184,7 +187,7 @@ public class Hotel_View extends Fragment {
         bookingsRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot querySnapshot) {
-                ArrayList<Booking> bookings = new ArrayList<>();
+                bookings = new ArrayList<>();
                 for (DocumentSnapshot documentSnapshot : querySnapshot) {
                     if (keys.contains(documentSnapshot.getId())) {
                         Booking booking = documentSnapshot.toObject(Booking.class);
@@ -193,7 +196,7 @@ public class Hotel_View extends Fragment {
                 }
 
                 // Create adapter passing in the sample user data
-                ViewBookingsAdpater adapter = new ViewBookingsAdpater(bookings);
+                adapter = new ViewBookingsAdpater(bookings);
                 // Attach the adapter to the recyclerview to populate items
                 lastBookings_rv.setAdapter(adapter);
                 // Set layout manager to position the items
@@ -205,7 +208,9 @@ public class Hotel_View extends Fragment {
                 Log.w(TAG, "Error getting bookings", e);
             }
         });
+
     }
+
 
 
     private void clickListeners(View root) {

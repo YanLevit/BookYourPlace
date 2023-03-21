@@ -141,10 +141,6 @@
             android:name="clickDetails"
             app:argType="string"
             app:nullable="true"/>
-        <argument
-            android:name="info"
-            app:argType="string"
-            app:nullable="true"/>
         <action
             android:id="@+id/action_hotelViewer_to_traveler_home"
             app:destination="@id/traveler_home" />

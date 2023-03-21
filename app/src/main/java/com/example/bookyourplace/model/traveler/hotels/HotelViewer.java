@@ -20,9 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -31,9 +29,7 @@ import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.GenerateUniqueIds;
-import com.example.bookyourplace.model.InternalStorage;
 import com.example.bookyourplace.model.hotel_manager.Hotel;
-import com.example.bookyourplace.model.hotel_manager.HotelFeature;
 import com.example.bookyourplace.model.traveler.Booking;
 import com.example.bookyourplace.model.traveler.Traveler;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,24 +37,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,9 +90,12 @@ public class HotelViewer extends Fragment {
             public void handleOnBackPressed() {
                 HotelViewerArgs args = HotelViewerArgs.fromBundle(getArguments());
                 String fragment = args.getSearch();
+                String mapFragment = args.getClickDetails();
 
                 if(fragment != null && fragment.equals("Search")){
-//                    Navigation.findNavController(getView()).navigate(R.id.action_hotelViewer_to_searchHotel);
+                    Navigation.findNavController(getView()).popBackStack();
+                }
+                else if (mapFragment != null && mapFragment.equals("clickDetails")){
                     Navigation.findNavController(getView()).popBackStack();
                 }
 

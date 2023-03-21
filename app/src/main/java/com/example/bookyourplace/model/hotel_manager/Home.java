@@ -365,15 +365,16 @@ public class Home  extends Fragment {
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
-                                                        Log.d(TAG, "Hotel ID removed from hotelmanager collection.");
+                                                        Log.d(TAG, "Hotel ID removed from Hotel Manager collection.");
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error removing hotel ID from hotelmanager collection", e);
+                                                        Log.w(TAG, "Error removing hotel ID from Hotel Manager collection", e);
                                                     }
                                                 });
+
                                         mHotelList.remove(position);
                                         mAdapter.notifyItemRemoved(position);
                                     }).addOnFailureListener(new OnFailureListener() {

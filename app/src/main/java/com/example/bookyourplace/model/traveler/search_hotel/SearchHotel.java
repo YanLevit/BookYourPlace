@@ -252,7 +252,7 @@ public class SearchHotel extends Fragment {
             holder.itemView.setOnClickListener(v -> {
                 //go-to hotel page
                 String hotelId = getSnapshots().getSnapshot(position).getId();
-                NavDirections action = SearchHotelDirections.actionSearchHotelToHotelViewer("Search",hotelId,"","");
+                NavDirections action = SearchHotelDirections.actionSearchHotelToHotelViewer("Search",hotelId,"");
                 Navigation.findNavController(root).navigate(action);
             });
         }

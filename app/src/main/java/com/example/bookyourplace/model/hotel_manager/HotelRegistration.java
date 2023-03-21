@@ -1,6 +1,6 @@
 package com.example.bookyourplace.model.hotel_manager;
 
-import com.example.bookyourplace.model.User;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,8 +43,6 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.Address;
 import com.example.bookyourplace.model.GenerateUniqueIds;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;

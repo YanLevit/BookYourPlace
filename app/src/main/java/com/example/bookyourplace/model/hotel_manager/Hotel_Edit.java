@@ -46,19 +46,12 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.Address;
 import com.example.bookyourplace.model.GenerateUniqueIds;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -67,7 +60,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.hbb20.CountryCodePicker;
 
@@ -79,7 +71,7 @@ import java.util.Map;
 public class Hotel_Edit extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
+
 
     private String hotelID;
     private Hotel hotel;
