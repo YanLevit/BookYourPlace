@@ -107,6 +107,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"
             android:text="Dates"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -155,6 +156,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="24dp"
             android:text="Resevation details"
+            android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -170,6 +172,7 @@
             android:layout_marginStart="60dp"
             android:layout_marginTop="8dp"
             android:text="Adults:"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -184,6 +187,7 @@
             android:layout_marginStart="60dp"
             android:layout_marginTop="16dp"
             android:text="Kids:"
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -198,6 +202,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView22"
@@ -210,14 +215,15 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:text="TextView"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/textView23"
             app:layout_constraintTop_toBottomOf="@+id/myBookings_adults" />
 
         <LinearLayout
-            android:layout_width="257dp"
-            android:layout_height="58dp"
+            android:layout_width="221dp"
+            android:layout_height="59dp"
             android:layout_marginTop="32dp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -231,16 +237,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30sp"
                 android:text="Total "
+                android:textColor="@color/black"
                 android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/mybookings_total"
-                android:layout_width="wrap_content"
+                android:layout_width="66dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30sp"
                 android:layout_weight="1"
                 android:drawableRight="@drawable/ic_euro"
                 android:textAlignment="textEnd"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>

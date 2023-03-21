@@ -7,10 +7,12 @@
     android:background="#F8F8FF">
 
     <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="52dp"
-        tools:layout_editor_absoluteY="37dp">
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="-198dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,16 +49,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageButton
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/search_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="47dp"
+                            android:layout_height="43dp"
                             android:padding="10dp"
+                            app:backgroundTint="#4682B4"
+                            app:icon="@drawable/ic_search"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="?android:attr/actionModeWebSearchDrawable"
-                            app:backgroundTint="#4682B4"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -77,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/the_weather_is"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -86,14 +88,14 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/weatherCard"
                 android:layout_width="match_parent"
-                android:layout_weight="3.5"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                app:cardCornerRadius="15dp"
-                android:backgroundTint="#484DA2"
-                android:background="#484DA2"
                 android:layout_height="0dp"
-                android:visibility="gone">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="3.5"
+                android:background="@color/main_color"
+                android:backgroundTint="@color/main_color"
+                android:visibility="gone"
+                app:cardCornerRadius="15dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -104,7 +106,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/archivo_medium"
-                        android:text="Lahore"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="34sp"
                         android:textStyle="bold"
@@ -120,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="52dp"
-                        android:text="Pakistan"
+                        android:text=""
                         android:textColor="#E2B75B"
                         android:textSize="22sp"
                         app:layout_constraintEnd_toStartOf="@+id/weatherIcon"
@@ -178,9 +180,22 @@
                 android:id="@+id/searchResults"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="24dp" />
+                android:layout_marginTop="24dp">
+
+            </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
+
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar_SearchHotel"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="529dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class Login extends Fragment {
     CheckBox cb_Remeber;
     FirebaseAuth mAuth;
 
+    private ProgressBar progressBar_Login;
+
     String[] permissions = new String[]{ //This declares a string array that contains a list of permissions that the app will request from the user.
             // These permissions are used by the app to access specific features or data on the device.
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -73,6 +76,10 @@ public class Login extends Fragment {
     private void initializeElements(View root) {
         inputEmail =  root.findViewById(R.id.etEmail_Login);
         inputPassword =  root.findViewById(R.id.etPassword_Login);
+
+        progressBar_Login =  root.findViewById(R.id.progressBar_Login);
+
+        progressBar_Login.setVisibility(View.GONE);
 
         cb_Remeber = root.findViewById(R.id.cb_Remember);
 
@@ -133,6 +140,7 @@ public class Login extends Fragment {
             return;
         }
 
+        progressBar_Login.setVisibility(View.VISIBLE);
 
         login(email,password);
     }
@@ -160,6 +168,7 @@ public class Login extends Fragment {
                 }
 
                 if(user.isEmailVerified()){
+                    progressBar_Login.setVisibility(View.GONE);
                     verifyTypeUser(user.getUid());
 
                 }

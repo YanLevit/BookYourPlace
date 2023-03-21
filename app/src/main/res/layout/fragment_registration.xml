@@ -281,6 +281,11 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="120dp"
+                            android:src="@drawable/img_option_traveller" />
+
                         <TextView
                             style="?attr/textAppearanceBody1"
                             android:id="@+id/textView6"
@@ -309,6 +314,11 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="120dp"
+                            android:src="@drawable/img_option_manager" />
+
                         <TextView
                             style="?attr/textAppearanceBody1"
                             android:id="@+id/textView5"
@@ -320,6 +330,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </GridLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

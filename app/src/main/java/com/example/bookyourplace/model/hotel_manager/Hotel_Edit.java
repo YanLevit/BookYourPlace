@@ -93,7 +93,7 @@ public class Hotel_Edit extends Fragment {
     private EditText et_Phone;
 
     private CountryCodePicker ccp_country;
-    private EditText et_City, et_Address, et_ZipCode;
+    private EditText et_City, et_Address;
 
     private ExtendedFloatingActionButton bt_Features;
     private TextView tv_Features_Selected;
@@ -182,7 +182,7 @@ public class Hotel_Edit extends Fragment {
         ccp_country = root.findViewById(R.id.ccp_Hotel_Country_edit);
         et_City = root.findViewById(R.id.et_Hotel_City_edit);
         et_Address = root.findViewById(R.id.et_Hotel_Address_edit);
-        et_ZipCode = root.findViewById(R.id.et_Hotel_ZipCode_edit);
+
 
         et_Description = root.findViewById(R.id.et_Description_Hotel_edit);
 
@@ -229,7 +229,7 @@ public class Hotel_Edit extends Fragment {
                         ccp_country.resetToDefaultCountry();
                         et_City.setText(hotel.getAddress().getCity());
                         et_Address.setText(hotel.getAddress().getAddress());
-                        et_ZipCode.setText(hotel.getAddress().getZipcode());
+
 
                         if (hotel.getAddress().getCoordinates() != null) {
                             coordinates = hotel.getAddress().getCoordinates();
@@ -701,7 +701,7 @@ public class Hotel_Edit extends Fragment {
         String country = ccp_country.getSelectedCountryNameCode();
         String city = et_City.getText().toString().trim();
         String address_string = et_Address.getText().toString().trim();
-        String zip_code = et_ZipCode.getText().toString().trim();
+
 
         ////////////// DESCRIPTION /////////////////
         String description = et_Description.getText().toString().trim();
@@ -775,11 +775,7 @@ public class Hotel_Edit extends Fragment {
             error = true;
         }
 
-        if(zip_code.isEmpty()){
-            et_ZipCode.setError("Zip-Code is required");
-            et_ZipCode.requestFocus();
-            error = true;
-        }
+
 
         if(tv_Features_Selected.getText().toString().trim().isEmpty()){
             tv_Features_Selected.setError("Select at least one feature");
@@ -809,7 +805,7 @@ public class Hotel_Edit extends Fragment {
             return;
         }
 
-        Address address = new Address(country, city, address_string, zip_code,coordinates.latitude,coordinates.longitude);
+        Address address = new Address(country, city, address_string,coordinates.latitude,coordinates.longitude);
 
         hotel.setName(name);
         hotel.setPhone(phone);

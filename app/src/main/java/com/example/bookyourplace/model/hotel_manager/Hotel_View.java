@@ -37,8 +37,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -52,6 +54,7 @@ public class Hotel_View extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
 
+    private String userID;
 
     private HotelManager user;
 
@@ -89,6 +92,7 @@ public class Hotel_View extends Fragment {
 
         Hotel_ViewArgs args = Hotel_ViewArgs.fromBundle(getArguments());
         hotelId = args.getHotel().getName();
+        userID = args.getHotel().getManager();
 
         initializeElements(root);
 
@@ -238,7 +242,31 @@ public class Hotel_View extends Fragment {
                 }
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("hotels").document(hotelId).delete();
+                Query query = db.collection("hotels").whereEqualTo("name", hotelId);
+                query.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                        String hotelID = documentSnapshot.getReference().getId();
+                        documentSnapshot.getReference().delete();
+                        db.collection("Hotel Manager")
+                                .document(userID)
+                                .update("hotels", FieldValue.arrayRemove(hotelID))
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Hotel ID removed from hotelmanager collection.");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error removing hotel ID from hotelmanager collection", e);
+                                    }
+                                });
+                    }
+                }).addOnFailureListener(e -> {
+                    // handle failure
+                });
+
                 bt_hotel_view_back.performClick();
                 dialog.dismiss();
             });

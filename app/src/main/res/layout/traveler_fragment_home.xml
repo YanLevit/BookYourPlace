@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="model.traveler.Home"
-    android:background="#F8F8FF">
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="0dp"
@@ -34,13 +34,14 @@
                 app:layout_constraintHeight_percent="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageView9"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@drawable/home_cover_mask"
-                app:layout_constraintHeight_percent="0.4"
                 app:layout_constraintEnd_toEndOf="@+id/imageView10"
+                app:layout_constraintHeight_percent="0.4"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,8 +75,7 @@
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/bt_ProfileMenu"
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
-                            />
+                            android:layout_height="match_parent" />
                     </androidx.cardview.widget.CardView>
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -83,14 +83,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:text="My bookings"
-                        app:icon="@drawable/ic_mybookings"
                         android:textAllCaps="false"
+                        app:backgroundTint="#4682B4"
+                        app:icon="@drawable/ic_mybookings"
                         app:iconPadding="8dp"
                         app:iconSize="16dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:backgroundTint="#4682B4"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
@@ -111,9 +111,9 @@
                     android:layout_height="wrap_content"
                     android:text="Edit Profile"
                     android:textAllCaps="false"
+                    app:backgroundTint="#4682B4"
                     app:iconPadding="8dp"
-                    app:iconSize="16dp"
-                    app:backgroundTint="#4682B4"/>
+                    app:iconSize="16dp" />
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/bt_Logout_User"
@@ -122,9 +122,9 @@
                     android:layout_marginTop="4dp"
                     android:text="Logout"
                     android:textAllCaps="false"
+                    app:backgroundTint="#4682B4"
                     app:iconPadding="8dp"
-                    app:iconSize="16dp"
-                    app:backgroundTint="#4682B4"/>
+                    app:iconSize="16dp" />
 
             </LinearLayout>
 
@@ -145,16 +145,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hi, Martin"
-                    android:textColor="@android:color/white"
-                    />
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     style="?attr/textAppearanceHeadline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Plan your next trip!"
-                    android:textColor="@android:color/white"
-                    />
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
@@ -174,26 +172,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginEnd="10dp"
-                        android:hint="Where you want to go?"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/home_search_btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Where you want to go?"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/home_search_btn"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textinput_location"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:backgroundTint="#60FFFFFF"
-                            android:imeOptions="actionDone"
-                            android:inputType="textPersonName|text|textCapSentences"
-                            android:textStyle="bold" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textinput_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="#60FFFFFF"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPersonName|text|textCapSentences"
+                        android:textStyle="bold" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/home_search_btn"
@@ -201,17 +201,15 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_marginTop="40dp"
-                        app:backgroundTint="#4682B4"
                         android:src="@drawable/ic_arrow_forward"
+                        app:backgroundTint="#4682B4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
             </LinearLayout>
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_search_onMap"
@@ -221,13 +219,23 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="100dp"
                 android:text="Hotels on Map"
+                app:backgroundTint="#4682B4"
                 app:iconGravity="textEnd"
                 app:iconSize="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout13"
                 app:layout_constraintHorizontal_bias="0.984"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
-                app:backgroundTint="#4682B4"/>
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
+
+            <ImageView
+                android:layout_width="410dp"
+                android:layout_height="402dp"
+                android:layout_marginTop="104dp"
+                android:src="@drawable/city"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -60,7 +62,7 @@ import okhttp3.Response;
 public class SearchHotel extends Fragment {
 
     EditText mSearchField;
-    ImageButton mSearchBtn;
+    Button mSearchBtn;
     RecyclerView mResultList;
     TextView mResultInfo;
 
@@ -86,6 +88,7 @@ public class SearchHotel extends Fragment {
 
     CardView weatherCard;
 
+    ProgressBar progressBar_Search_Hotel;
 
 
     @Override
@@ -152,7 +155,11 @@ public class SearchHotel extends Fragment {
                 weatherCard.setVisibility(View.VISIBLE);
                 weatherResult.setVisibility(View.VISIBLE);
                 }
-        });
+            progressBar_Search_Hotel.setVisibility(View.VISIBLE);
+            new Handler().postDelayed(() -> {
+                progressBar_Search_Hotel.setVisibility(View.GONE);
+            }, 2000); // Set the delay time in milliseconds
+    });
     }
 
     private void loadData(Query query, View root) {
@@ -268,6 +275,8 @@ public class SearchHotel extends Fragment {
         mweatherIcon = root.findViewById(R.id.weatherIcon);
         weatherResult = root.findViewById(R.id.weatherResultInfoText);
         weatherCard = root.findViewById(R.id.weatherCard);
+        progressBar_Search_Hotel = root.findViewById(R.id.progressBar_SearchHotel);
+        progressBar_Search_Hotel.setVisibility(View.GONE);
 
         mResultInfo = root.findViewById(R.id.searchResultsInfoText);
         SearchHotelArgs args = SearchHotelArgs.fromBundle(getArguments());

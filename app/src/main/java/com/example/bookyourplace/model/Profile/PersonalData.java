@@ -41,7 +41,7 @@ public class PersonalData extends Fragment {
     User user;
     String path;
     EditText et_Name, et_Surname, et_Age,et_EmailAddress;
-    EditText et_City,et_Address,et_ZipCode;
+    EditText et_City,et_Address;
     EditText et_Phone;
     Button bt_save_preferences;
 
@@ -78,7 +78,7 @@ public class PersonalData extends Fragment {
 
         et_City = root.findViewById(R.id.et_City);
         et_Address = root.findViewById(R.id.et_Address);
-        et_ZipCode = root.findViewById(R.id.et_ZipCode);
+
 
         bt_save_preferences = root.findViewById(R.id.bt_save_preferences);
     }
@@ -156,7 +156,6 @@ public class PersonalData extends Fragment {
         if(user.getAddress() != null){
             et_City.setText(user.getAddress().getCity());
             et_Address.setText(user.getAddress().getAddress());
-            et_ZipCode.setText(user.getAddress().getZipcode());
            ;
         }
 
@@ -172,7 +171,6 @@ public class PersonalData extends Fragment {
         String phone = et_Phone.getText().toString().trim();
         String city = et_City.getText().toString().trim();
         String address = et_Address.getText().toString().trim();
-        String zipcode = et_ZipCode.getText().toString().trim();
 
         boolean error = false;
 
@@ -238,7 +236,7 @@ public class PersonalData extends Fragment {
         Address newaddress = new Address();
         newaddress.setCity(city);
         newaddress.setAddress(address);
-        newaddress.setZipcode(zipcode);
+
 
         user.setAddress(newaddress);
 

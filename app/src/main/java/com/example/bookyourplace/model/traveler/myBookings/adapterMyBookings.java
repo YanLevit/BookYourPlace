@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -11,10 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookyourplace.R;
 import com.example.bookyourplace.model.hotel_manager.Hotel;
+import com.example.bookyourplace.model.hotel_manager.HotelListAdapter;
 import com.example.bookyourplace.model.traveler.Booking;
 import com.squareup.picasso.Picasso;
 
@@ -25,14 +29,27 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
     List<Booking> bookings;
     Hotel[]hotels;
 
+    private static adapterMyBookings.OnItemClickListener bListener;
+
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public static void setOnItemClickListener(OnItemClickListener listener) {
+        bListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView hotelName, hotelCity, nAdults,nKids, total,startDate, endDate;;
+        TextView hotelName, hotelCity, nAdults,nKids, total,startDate, endDate;
         RatingBar hotelRating;
         ImageView hotelImg;
         ConstraintLayout expandableLayout;
         ImageButton expand;
 
-        public ViewHolder(@NonNull View itemView) {
+
+
+        public ViewHolder(@NonNull View itemView , final adapterMyBookings.OnItemClickListener listener) {
             super(itemView);
             hotelName=itemView.findViewById(R.id.myBookings_listName);
             hotelCity=itemView.findViewById(R.id.myBookings_listCity);
@@ -46,12 +63,14 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
             expandableLayout =itemView.findViewById(R.id.expandableLayout);
             expand = itemView.findViewById(R.id.myBookings_expandbtn);
 
+
             expand.setOnClickListener(v ->
             {
                 Booking booking= bookings.get(getAdapterPosition());
                 booking.setExpanded(!booking.isExpanded());
                 notifyItemChanged(getAdapterPosition());
             });
+
         }
     }
 
@@ -69,7 +88,7 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
         // Inflate the custom layout
         View featureView = inflater.inflate(R.layout.traveler_bookings_list_item, parent, false);// inflate the layout
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(featureView);
+        ViewHolder viewHolder = new ViewHolder(featureView , bListener);
         return viewHolder;
     }
 
@@ -94,6 +113,13 @@ public class adapterMyBookings extends RecyclerView.Adapter<adapterMyBookings.Vi
     @Override
     public int getItemCount() {
         return bookings.size();
+    }
+    public long getItemId(int position) {
+        return position;
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }
 

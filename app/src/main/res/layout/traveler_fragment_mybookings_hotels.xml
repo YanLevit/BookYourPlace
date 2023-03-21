@@ -47,14 +47,14 @@
             </LinearLayout>
         </ScrollView>
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_Backhome_bookings"
-            android:layout_width="47dp"
-            android:layout_height="43dp"
+            android:layout_width="54dp"
+            android:layout_height="49dp"
+            app:backgroundTint="#4682B4"
+            app:icon="@drawable/ic_arrow_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="?attr/actionModeCloseDrawable"
-            app:backgroundTint="#4682B4"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

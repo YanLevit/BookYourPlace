@@ -31,6 +31,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -38,7 +39,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -243,22 +246,48 @@ public class Home  extends Fragment {
     private void getListHotel(View root) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String managerId = mUser.getUid(); // get current user's ID
-        db.collection("hotels")
-                .whereEqualTo("manager", managerId) // query hotels where manager field matches current user's ID
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        mHotelList.clear();
-                        for (DocumentSnapshot document : task.getResult()) {
-                            Hotel hotel = document.toObject(Hotel.class);
-                            mHotelList.add(hotel);
-                        }
-                        buildRecyclerView(root);
-                    } else {
-                        Log.d(TAG, "Error getting hotels: ", task.getException());
-                    }
-                });
+
+        Query hotelsQuery = db.collection("hotels")
+                .whereEqualTo("manager", managerId); // query hotels where manager field matches current user's ID
+
+        hotelsQuery.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mHotelList.clear();
+                for (DocumentSnapshot document : task.getResult()) {
+                    Hotel hotel = document.toObject(Hotel.class);
+                    mHotelList.add(hotel);
+                }
+                buildRecyclerView(root);
+            } else {
+                Log.d(TAG, "Error getting hotels: ", task.getException());
+            }
+        });
+
+        setHotelListChangeListener(hotelsQuery);
     }
+
+    private void setHotelListChangeListener(Query hotelsQuery) {
+        hotelsQuery.addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.w(TAG, "Listen failed.", error);
+                return;
+            }
+
+            mHotelList.clear();
+
+            for (DocumentSnapshot document : value.getDocuments()) {
+                Hotel hotel = document.toObject(Hotel.class);
+                mHotelList.add(hotel);
+            }
+            if (mAdapter == null) {
+                mAdapter = new HotelListAdapter(mHotelList,getActivity());
+                mRecyclerView.setAdapter(mAdapter);
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
 
     private void buildRecyclerView(View root) {
 
@@ -326,9 +355,25 @@ public class Home  extends Fragment {
                             .get()
                             .addOnSuccessListener(queryDocumentSnapshots -> {
                                 for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                    String hotelId = document.getId();
                                     document.getReference().delete().addOnSuccessListener(aVoid -> {
                                         Log.d(TAG, "DocumentSnapshot successfully deleted!");
                                         Toast.makeText(getContext(), "Hotel Deleted Successfully", Toast.LENGTH_LONG).show();
+                                        db.collection("Hotel Manager")
+                                                .document(mUser.getUid())
+                                                .update("hotels", FieldValue.arrayRemove(hotelId))
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "Hotel ID removed from hotelmanager collection.");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error removing hotel ID from hotelmanager collection", e);
+                                                    }
+                                                });
                                         mHotelList.remove(position);
                                         mAdapter.notifyItemRemoved(position);
                                     }).addOnFailureListener(new OnFailureListener() {

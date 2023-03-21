@@ -34,26 +34,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:backgroundTint="#4682B4"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tilZipCode" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilZipCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="25dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tilAddress">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_ZipCode"
-                            android:layout_width="match_parent"
-                            android:background="#F8F8FF"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/zip_code" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/tilAddress" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilAddress"

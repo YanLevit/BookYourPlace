@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.OnBackPressedCallback;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyBookings extends Fragment {
+public class MyBookings extends Fragment  {
 
     private RecyclerView recyclerView;
     private List<Booking> bookings;
@@ -38,7 +39,13 @@ public class MyBookings extends Fragment {
     private ArrayList<String> bookingKeys;
 
     private FirebaseFirestore db;
-    ImageButton bt_backHOme;
+    Button bt_backHOme;
+
+    private adapterMyBookings mAdapter;
+
+    private RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,13 +81,12 @@ public class MyBookings extends Fragment {
         db = FirebaseFirestore.getInstance();
         recyclerView = root.findViewById(R.id.bookingsList_recyclerView);
         bt_backHOme = root.findViewById(R.id.bt_Backhome_bookings);
+
     }
 
     private void clickListener(View root) {
         bt_backHOme.setOnClickListener(v -> {
-
             Navigation.findNavController(root).navigate(R.id.action_myBookings_to_traveler_home);
-
         });
     }
 
@@ -116,6 +122,8 @@ public class MyBookings extends Fragment {
                         bookings.add(document.toObject(Booking.class));
                     }
                 }
+                if(bookings.isEmpty())
+                    return;
                 getHotels();
             } else {
                 Log.d("TAG", "Current data: null");
@@ -142,17 +150,20 @@ public class MyBookings extends Fragment {
                     }
                 }
 
-                if (bookings.size() == 0) {
+
+                if (bookings.size() == 0 && hotels == null) {
                     Navigation.findNavController(getView()).navigate(R.id.action_myBookings_self);
                 } else {
-                    adapterMyBookings adapterMyBookings = new adapterMyBookings(bookings, hotels);
-                    recyclerView.setAdapter(adapterMyBookings);
+                    mAdapter = new adapterMyBookings(bookings, hotels);
                     // Set layout manager to position the items
-                   recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    recyclerView.setAdapter(mAdapter);
                 }
             } else {
                 Log.d("TAG", "Current data: null");
             }
         });
     }
+
 }
+

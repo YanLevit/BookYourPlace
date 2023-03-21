@@ -252,41 +252,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/til_Hotel_Price_Rooms"
                 tools:visibility="visible">
 
-                <LinearLayout
-                    android:id="@+id/ll_Hotel_GPS_Address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView15">
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:padding="10dp" />
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:id="@+id/tv_title_gps_address"
-                        style="?attr/textAppearanceSubtitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Select Address on Map" />
-                </LinearLayout>
-
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/ccp_Hotel_Country"
                     android:layout_width="match_parent"
@@ -356,33 +321,6 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/address"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/black"
-                        android:textColorLink="@color/black" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/til_Hotel_ZipCode"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="25dp"
-                    android:enabled="true"
-                    android:textColorHint="@color/black"
-                    app:hintTextColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tilAddress">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_Hotel_ZipCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/zip_code"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
                         android:textColorLink="@color/black" />
@@ -487,56 +425,21 @@
                     android:text="@string/add_other_photos" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView17"
-                style="?attr/textAppearanceHeadline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="25dp"
-                android:text="@string/how_is_the_area_around"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Photos" />
-
-            <TextView
-                android:id="@+id/tv_Hotel_Moods_Title"
-                style="?attr/textAppearanceCaption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17" />
-
-            <LinearLayout
-                android:id="@+id/ll_Hotel_Moods"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="35dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="35dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_Hotel_Moods_Title">
-
-            </LinearLayout>
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/bt_RegisterHotel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
-                app:backgroundTint="#4682B4"
                 android:text="@string/register_the_hotel"
+                app:backgroundTint="#4682B4"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="textEnd"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Moods" />
+                app:layout_constraintTop_toBottomOf="@+id/ll_Hotel_Photos" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

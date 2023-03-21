@@ -67,8 +67,6 @@ import java.util.Map;
 
 public class HotelRegistration extends Fragment {
     private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
-
     FirebaseFirestore db;
     private Hotel hotel;
 
@@ -81,7 +79,7 @@ public class HotelRegistration extends Fragment {
     private EditText et_Phone;
 
     private CountryCodePicker ccp_country;
-    private EditText et_City, et_Address, et_ZipCode;
+    private EditText et_City, et_Address;
 
     private ExtendedFloatingActionButton bt_Features;
     private TextView tv_Features_Selected;
@@ -89,8 +87,6 @@ public class HotelRegistration extends Fragment {
 
     private EditText et_Description;
 
-    private TextView tv_Hotel_Moods_Title;
-    private LinearLayout ll_Hotel_Moods;
     private double latitude;
     private double longitude;
 
@@ -128,7 +124,6 @@ public class HotelRegistration extends Fragment {
 
     private void initializeElements(View root) {
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
         et_Name = root.findViewById(R.id.et_Hotel_Name);
@@ -146,15 +141,12 @@ public class HotelRegistration extends Fragment {
         ccp_country = root.findViewById(R.id.ccp_Hotel_Country);
         et_City = root.findViewById(R.id.et_Hotel_City);
         et_Address = root.findViewById(R.id.et_Hotel_Address);
-        et_ZipCode = root.findViewById(R.id.et_Hotel_ZipCode);
+
 
         et_Description = root.findViewById(R.id.et_Description_Hotel);
 
         bt_Features = root.findViewById(R.id.bt_Features);
         tv_Features_Selected = root.findViewById(R.id.tv_Features_Selected);
-
-        tv_Hotel_Moods_Title = root.findViewById(R.id.tv_Hotel_Moods_Title);
-        ll_Hotel_Moods = root.findViewById(R.id.ll_Hotel_Moods);
 
         ll_Hotel_Cover_Photo = root.findViewById(R.id.ll_Hotel_Cover_Photo);
         tv_title_cover_photo = root.findViewById(R.id.tv_title_cover_photo);
@@ -555,7 +547,7 @@ public class HotelRegistration extends Fragment {
         String country = ccp_country.getSelectedCountryNameCode();
         String city = et_City.getText().toString().trim();
         String address_string = et_Address.getText().toString().trim();
-        String zip_code = et_ZipCode.getText().toString().trim();
+
 
         ////////////// DESCRIPTION /////////////////
         String description = et_Description.getText().toString().trim();
@@ -626,12 +618,6 @@ public class HotelRegistration extends Fragment {
             error = true;
         }
 
-        if (zip_code.isEmpty()) {
-            et_ZipCode.setError("Zip-Code is required");
-            et_ZipCode.requestFocus();
-            error = true;
-        }
-
         if (tv_Features_Selected.getText().toString().trim().isEmpty()) {
             tv_Features_Selected.setError("Select at least one feature");
             tv_Features_Selected.requestFocus();
@@ -672,7 +658,7 @@ public class HotelRegistration extends Fragment {
                 coordinates = new LatLng(latitude, longitude);
 
                 // Create and register the hotel object on Firebase
-                Address address = new Address(country, city, address_string, zip_code, coordinates.latitude, coordinates.longitude);
+                Address address = new Address(country, city, address_string, coordinates.latitude, coordinates.longitude);
                 hotel = new Hotel(name, phone, description, address, firebaseAuth.getCurrentUser().getUid(), price_room, starts, total_rooms, hotelFeatures);
                 registerOnFirebase(hotel);
             } else {
